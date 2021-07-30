@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: "com.jfrog.bintray"
 apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.hujiayi1002'
 android {
