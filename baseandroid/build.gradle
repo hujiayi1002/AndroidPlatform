@@ -1,0 +1,143 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.github.dcendents.android-maven'
+group = 'com.github.hujiayi1002'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    android.buildFeatures.dataBinding=true
+    android.buildFeatures.viewBinding=true
+
+    buildTypes {
+        release {
+            resValue "string", "app_real_name", "baselib"
+            // 本地
+            buildConfigField "String", "BASE_VUE_URL", "\"http://10.81.108.75:8083/#/\"" // 本地
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+//            applicationIdSuffix '.debug'
+            resValue "string", "app_real_name", "baselib"
+            buildConfigField "String", "API_HOST", "\"http://10.81.108.70:8090/\"" //API Host
+            buildConfigField "String", "VUE_URL", "\"http://10.81.108.70:8090/\""
+            buildConfigField "String", "DOWNLOAD_HOST", "\"http://10.81.108.70:8090/mobile/download?id=\""
+        }
+    }
+    compileOptions {
+        sourceCompatibility kotlin_version
+        targetCompatibility kotlin_version
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    //noinspection GradleDependency
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.3.2'
+    api 'androidx.appcompat:appcompat:1.2.0'
+    api 'androidx.constraintlayout:constraintlayout:2.0.4'
+    api 'com.google.android.material:material:1.2.1'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    api 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+    api "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
+
+    //协程
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0-native-mt'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0-native-mt'
+
+    //datastore
+    //Typed DataStore (Typed API surface, such as Proto)
+    api "androidx.datastore:datastore:1.0.0-alpha03"
+    api "androidx.datastore:datastore-preferences:1.0.0-alpha03"
+
+//    //Room数据库
+//    def room_version = "2.2.5"
+//    api "androidx.room:room-runtime:$room_version"
+//    api "androidx.room:room-compiler:$room_version"
+//    api "androidx.room:room-ktx:$room_version"
+//    //郭霖的LitePal
+//    api 'org.litepal.guolindev:core:3.2.2'
+
+    //retrofit和rxjava
+    api 'com.squareup.retrofit2:retrofit:2.9.0'
+    api 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
+    api 'com.squareup.retrofit2:converter-gson:2.9.0'
+    api 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
+
+    //rxjava
+    api 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
+    //快速Adapter
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.2'
+
+    //权限判定库
+//    api 'com.github.tbruyelle:rxpermissions:0.12'
+    api 'com.permissionx.guolindev:permissionx:1.4.0'
+
+    //glide
+    api 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+
+    //SmartRefreshLayout
+//    api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.2'
+    //没有使用特殊Header，可以不加这行
+//    api 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.2'
+    api  'com.scwang.smart:refresh-layout-kernel:2.0.1'      //核心必须依赖
+    api  'com.scwang.smart:refresh-header-classics:2.0.1'    //经典刷新头
+    api  'com.scwang.smart:refresh-footer-classics:2.0.1'    //经典加载
+
+
+    //状态栏
+    api 'com.gyf.immersionbar:immersionbar:3.0.0'
+
+    //x5
+    api 'com.tencent.tbs.tbssdk:sdk:43939'
+
+    //树状
+    api 'com.github.zhangke3016:MultilevelTreeList:1.0.2'
+
+    //图片选择
+    //api 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.3'
+    api 'com.github.HuanTanSheng:EasyPhotos:3.1.3' //androidx版本，支持android 10，永久维护
+
+
+    api files('libs/pinyin4j-2.5.0.jar')
+
+    //BottomBarLayout
+    api 'com.github.chaychan:BottomBarLayout:1.2.0'
+
+    // if u use AndroidX, use the following
+    api 'com.blankj:utilcodex:1.29.0'
+
+    //eventbus
+    api 'org.greenrobot:eventbus:3.2.0'
+
+    //缩放图片
+    api 'com.github.chrisbanes:PhotoView:2.3.0'
+
+    //压缩图片
+    api 'top.zibin:Luban:1.1.8'
+
+    //GSYVideoPlayer完整版引入
+    api 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer:v8.1.3-jitpack'
+
+}

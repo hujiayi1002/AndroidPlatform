@@ -1,0 +1,104 @@
+    val beans = ArrayList<DataEntity>()
+
+
+
+ private fun getNode(entity: ChildNodeBean) {
+        val bean = Entity()
+        bean.id = entity.id
+        bean.pid = entity.pid
+        bean.name = entity.name
+        beans.add(bean)
+        if (entity.childNode.size == 0) {
+            return
+        }
+        for (i in entity.childNode.indices) {
+            getNode(entity.childNode[i])
+        }
+    }
+____________________________________________________________________________________________________________________________________
+    单选使用
+
+    val mDatas = ArrayList<Node<Any, Any>>()
+
+        for (i in beans.indices) {
+                    if (beans[i].pid == "0") {
+                        mDatas.add(
+                            Node(
+                            beans[i].id.toString(),
+                                "-1",
+                                beans[i].name
+                            )
+                        )
+                    } else {
+                        mDatas.add(
+                            Node(
+                                beans[i].id.toString(),
+                                beans[i].pid.toString(),
+                                beans[i].name
+                            )
+                        )
+                    }
+                }
+
+
+
+
+                val adapter = TreeAdapter(
+                    recyclerView, mContext, mDatas, 0, R.mipmap.tree_ex,
+                    R.mipmap.tree_ec,
+                    onClickListener
+                )
+                recyclerView.adapter=adapter
+                //可不用实现这个点击事件,自带的有TreeRecyclerAdapter.setOnTreeNodeClickListener
+               private val onClickListener = object : TreeAdapter.ClickListener {
+                               override fun onClick(node: Node<Any, Any>) {
+                                        val intent = Intent()
+                                       intent.putExtra("id", node.id.toString())
+                                       intent.putExtra("name", node.name.toString())
+                                       setResult(Activity.RESULT_OK, intent)
+                                       finish()
+                               }
+
+                           }
+____________________________________________________________________________________________________________________________________
+  多选
+
+
+
+    多选不应该用CheckBox,用图片代替,否则状态会错乱
+    val mDatas = ArrayList<Node<Any, Any>>()
+=============================================
+        for (i in beans.indices) {
+                    if (beans[i].pid == "0") {
+                        mDatas.add(
+                            Node(
+                                beans[i].id.toString(),
+                                "-1",
+                                beans[i].name
+                            )
+                        )
+                    } else {
+                        mDatas.add(
+                            Node(
+                                beans[i].id.toString(),
+                                beans[i].pid.toString(),
+                                beans[i].name
+                            )
+                        )
+                    }
+                }
+
+=================================================
+如果是两个,则加两次就行
+  mDatas.add( Node(beans[i].id.toString(),
+                                "-1",
+                                beans[i].name
+                            )
+                        )
+
+  mDatas.add( Node(beans[i].id.toString(),
+                                "第一个集合的id",
+                                beans[i].name
+                            )
+                        )
+====================================================
