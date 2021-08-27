@@ -10,7 +10,7 @@ import com.google.gson.JsonIOException
 import com.google.gson.JsonParseException
 import com.google.gson.JsonSyntaxException
 import com.ocse.baseandroid.net.coroutine.SingleLiveData
-import com.ocse.baseandroid.utils.Logger
+import com.ocse.baseandroid.utils.MyLog
 import com.ocse.baseandroid.utils.NetworkUtil
 import com.ocse.baseandroid.utils.ObtainApplication
 import com.ocse.baseandroid.utils.ToastUtil
@@ -19,9 +19,10 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.SocketException
+import java.net.SocketTimeoutException
+import java.util.concurrent.TimeoutException
 
 
 /**
@@ -57,29 +58,28 @@ open class BaseViewModel : ViewModel() {
         var reason = e.message
         //网络异常
         if (e is NetworkErrorException || !NetworkUtil.isConnected(ObtainApplication.getApp())) {
-            reason = "网络异常，请检查网络"
+            reason = "网络异常，请检查网络后重试"
             //账户异常
         } else if (e is AccountsException) {
             reason = "账户异常"
-            //连接异常
-        } else if (e is ConnectException) {
-            reason = "连接异常,请稍后重新连接"
             //socket异常--继承于SocketException
-        } else if (e is SocketException) {
-            reason = "socket异常"
+        } else if (e is SocketException || e is ConnectException) {
+            reason = "连接异常,请稍后重新连接"
             // http异常
-        } else if (e is HttpException) {
-            reason = e.message
+//        } else if (e is HttpException) {
+//            reason = e.message
         } else if (e is JsonSyntaxException
             || e is JsonIOException
             || e is JsonParseException
         ) {
             //数据格式化错误
-            reason = "数据格式化错误"
-        } else if (e is ClassCastException || e is IllegalStateException) {
+            reason = "Json数据格式化错误"
+        } else if (e is ClassCastException) {
             reason = "类型转换错误"
+        } else if (e is TimeoutException || e is SocketTimeoutException) {
+            reason = "请求超时,请稍后重试"
         }
-        Logger.e(e.localizedMessage)
+        MyLog.e("Exception---${e.message}")
         return reason.toString()
     }
 

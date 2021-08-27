@@ -88,6 +88,8 @@ dependencies {
 
     //快速Adapter
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.2'
+    //侧滑删除
+    api 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
 
     //权限判定库
 //    api 'com.github.tbruyelle:rxpermissions:0.12'

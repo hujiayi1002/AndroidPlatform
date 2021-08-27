@@ -6,12 +6,10 @@ import com.google.gson.Gson
 import com.google.gson.JsonIOException
 import com.google.gson.JsonParseException
 import com.google.gson.JsonSyntaxException
-import com.ocse.baseandroid.base.BaseApplication
-import com.ocse.baseandroid.utils.Logger
+import com.ocse.baseandroid.utils.MyLog
 import com.ocse.baseandroid.utils.NetworkUtil
 import com.ocse.baseandroid.utils.ObtainApplication
 import com.ocse.baseandroid.utils.ToastUtil.Companion.show
-import com.ocse.baseandroid.view.LoadingView
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import retrofit2.HttpException
@@ -30,7 +28,7 @@ abstract class BaseObserver<T>(compositeDisposable: CompositeDisposable) :
 
     override fun onNext(t: T) {
         _onNext(t)
-        Logger.e( "onNext = " + Gson().toJson(t))
+        MyLog.e( "onNext = " + Gson().toJson(t))
     }
 
     override fun onError(e: Throwable) {
@@ -61,7 +59,7 @@ abstract class BaseObserver<T>(compositeDisposable: CompositeDisposable) :
         } else if (e is ClassCastException || e is IllegalStateException) {
             reason = "类型转换错误"
         }
-        Logger.e(e.localizedMessage)
+        MyLog.e(e.localizedMessage)
         _onError(e)
         show(reason)
     }

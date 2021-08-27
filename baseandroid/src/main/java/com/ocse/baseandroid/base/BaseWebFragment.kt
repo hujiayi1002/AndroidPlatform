@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import com.ocse.baseandroid.R
 import com.ocse.baseandroid.databinding.FragmentWebBinding
 import com.ocse.baseandroid.js.BaseJSScript
-import com.ocse.baseandroid.utils.Logger
+import com.ocse.baseandroid.utils.MyLog
 import com.ocse.baseandroid.view.LoadingView
 import com.tencent.smtt.sdk.WebView
 import com.tencent.smtt.sdk.WebViewClient
@@ -21,7 +21,7 @@ class BaseWebFragment : BaseFragment<FragmentWebBinding>(R.layout.fragment_web) 
         if (!loadingView.isShowing&&isVisible)
             loadingView.show()
         dataBinding.x5Web.loadUrl(url)
-        Logger.e("TAG", "onViewCreated: $url, ")
+        MyLog.e("TAG", "onViewCreated: $url, ")
         dataBinding.x5Web.addJavascriptInterface(activity?.let { BaseJSScript() }, "android")
         dataBinding.x5Web.webViewClient = object : WebViewClient() {
             override fun onPageFinished(p0: WebView?, p1: String?) {

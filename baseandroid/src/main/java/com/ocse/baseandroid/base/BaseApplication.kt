@@ -4,7 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import com.ocse.baseandroid.R
-import com.ocse.baseandroid.utils.Logger
+import com.ocse.baseandroid.utils.MyLog
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -45,12 +45,12 @@ open class BaseApplication : Application() {
             it.printStackTrace();//这里处理所有的Rxjava异常
         }
 
-        QbSdk.setDownloadWithoutWifi(true)
+//        QbSdk.setDownloadWithoutWifi(true)
         // 在调用TBS初始化、创建WebView之前进行如下配置
-        val map = HashMap<String, Any>()
-        map[TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER] = true
-        map[TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE] = true
-        QbSdk.initTbsSettings(map)
+//        val map = HashMap<String, Any>()
+//        map[TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER] = true
+//        map[TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE] = true
+//        QbSdk.initTbsSettings(map)
 
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
@@ -59,7 +59,7 @@ open class BaseApplication : Application() {
 
             override fun onActivityStarted(activity: Activity) {
                 count++
-                Logger.e("onActivityCreated: " + count)
+                MyLog.e("onActivityCreated: " + count)
             }
 
             override fun onActivityResumed(activity: Activity) {
@@ -75,7 +75,7 @@ open class BaseApplication : Application() {
                 count--
                 if (count <= 0) {
                     isForeground = false
-                    Logger.e("onActivityCreated: " + count)
+                    MyLog.e("onActivityCreated: " + count)
 //                    ToastUtil.show("当前APP已经不在前台，请谨慎操作")
                 }
             }
@@ -98,19 +98,19 @@ open class BaseApplication : Application() {
         map[TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE] = true
         QbSdk.initTbsSettings(map)
         //搜集本地tbs内核信息并上报服务器，服务器返回结果决定使用哪个内核。
-//
-//        val cb = object : QbSdk.PreInitCallback {
-//
-//            override fun onViewInitFinished(arg0: Boolean) {
-//                //x5內核初始化完成的回调，为true表示x5内核加载成功，否则表示x5内核加载失败，会自动切换到系统内核。
-//                Logger.e("app onViewInitFinished is $arg0")
-//            }
-//
-//            override fun onCoreInitFinished() {
-//            }
-//        }
-        //x5内核初始化接口
-//        QbSdk.initX5Environment(applicationContext, cb)
+
+        val cb = object : QbSdk.PreInitCallback {
+
+            override fun onViewInitFinished(arg0: Boolean) {
+                //x5內核初始化完成的回调，为true表示x5内核加载成功，否则表示x5内核加载失败，会自动切换到系统内核。
+                MyLog.e("app onViewInitFinished is $arg0")
+            }
+
+            override fun onCoreInitFinished() {
+            }
+        }
+        // x5内核初始化接口
+        QbSdk.initX5Environment(applicationContext, cb)
     }
 
     /**

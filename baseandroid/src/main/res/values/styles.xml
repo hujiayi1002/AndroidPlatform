@@ -53,4 +53,9 @@
         <attr name="backgroundColor" format="reference|color" />
 
     </declare-styleable>
+
+    <declare-styleable name="SignView">
+        <attr name="lineColor" format="color" />
+        <attr name="lineWidth" format="dimension" />
+    </declare-styleable>
 </resources>

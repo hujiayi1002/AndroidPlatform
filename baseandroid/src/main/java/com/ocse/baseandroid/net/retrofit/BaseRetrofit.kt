@@ -1,6 +1,6 @@
 package com.ocse.baseandroid.net.retrofit
 
-import com.ocse.baseandroid.utils.Logger
+import com.ocse.baseandroid.utils.MyLog
 import com.ocse.baseandroid.utils.SharePreferenceUtil.getString
 import com.ocse.baseandroid.utils.ToastUtil.Companion.show
 import io.reactivex.Observable
@@ -118,7 +118,7 @@ open class BaseRetrofit {
 //                Log.e("HttpLoggingInterceptor", "|-----------------网络日志-----------------｜")
 //                Log.e("HttpLoggingInterceptor", "|retrofitBack = $message                  |")
 //                Log.e("HttpLoggingInterceptor", "|__________________网络日志________________ |")
-                Logger.e("$message")
+                MyLog.e("$message")
             }
         }).setLevel(HttpLoggingInterceptor.Level.BODY)
 

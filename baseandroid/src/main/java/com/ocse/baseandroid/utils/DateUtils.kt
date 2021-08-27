@@ -419,7 +419,7 @@ object DateUtils {
         val start = startHour * 60
         val end = endHour * 60
         val minuteOfDay = hour.toInt() * 60 + minute.toInt()
-        Logger.e("stf--hour:minute-->$hour:$minute")
+        MyLog.e("stf--hour:minute-->$hour:$minute")
         return minuteOfDay >= start && minuteOfDay <= end
     }
 }

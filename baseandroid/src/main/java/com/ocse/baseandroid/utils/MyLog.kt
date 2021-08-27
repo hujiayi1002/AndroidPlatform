@@ -4,7 +4,7 @@ import android.util.Log
 import com.ocse.baseandroid.BuildConfig
 
 
-class Logger {
+class MyLog {
     companion object {
         var TAG = "TAG"
         private var enable = false

@@ -61,6 +61,7 @@ abstract class BaseActivity<V : ViewDataBinding>(getLayoutId: Int) :
         imgRight = toolbar.findViewById(R.id.imgRight)
         relBack.setOnClickListener { finish() }
         TitleBuilder(title).setRightImgGone().setRightTextGone()
+
     }
 
     open fun setMainTextView(title: String): TitleBuilder? {

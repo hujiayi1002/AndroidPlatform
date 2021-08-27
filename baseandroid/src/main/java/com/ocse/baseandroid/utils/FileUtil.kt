@@ -8,7 +8,7 @@ class FileUtil private constructor() {
      * @param path 传入路径字符串
      * @return File
      */
-    private fun createFileIfNotExist(path: String): File {
+     fun createFileIfNotExist(path: String): File {
         println("cr")
         val file = File(path)
         if (!file.exists()) {
@@ -27,7 +27,7 @@ class FileUtil private constructor() {
      * @param path 传入路径字符串
      * @return File
      */
-    private fun createDirIfNotExist(path: String?): File {
+     fun createDirIfNotExist(path: String?): File {
         val file = File(path)
         if (!file.exists()) {
             try {
@@ -44,7 +44,7 @@ class FileUtil private constructor() {
      * @param path
      * @return
      */
-    private fun isExist(path: String?): Boolean {
+     fun isExist(path: String?): Boolean {
         val file = File(path)
         return file.exists()
     }
@@ -55,7 +55,7 @@ class FileUtil private constructor() {
      * @param path
      * @return
      */
-    private fun createNewFile(path: String): File {
+     fun createNewFile(path: String): File {
         val file = File(path)
         if (isExist(path)) {
             file.delete()
@@ -70,7 +70,7 @@ class FileUtil private constructor() {
      * @param path
      * @return
      */
-    private fun deleteFile(path: String?): Boolean {
+     fun deleteFile(path: String?): Boolean {
         val file = File(path)
         if (isExist(path)) {
             file.delete()
@@ -79,7 +79,7 @@ class FileUtil private constructor() {
     }
 
     // 删除一个目录
-    private fun deleteFileDir(path: String): Boolean {
+     fun deleteFileDir(path: String): Boolean {
         var flag = false
         val file = File(path)
         if (!isExist(path)) {
@@ -109,7 +109,7 @@ class FileUtil private constructor() {
         return flag
     }
 
-    private fun delFolder(folderPath: String) {
+     fun delFolder(folderPath: String) {
         try {
             delAllFile(folderPath) // 删除完里面所有内容
             var filePath: String? = folderPath
@@ -123,7 +123,7 @@ class FileUtil private constructor() {
 
     // 删除指定文件夹下所有文件
     // param path 文件夹完整绝对路径
-    private fun delAllFile(path: String): Boolean {
+     fun delAllFile(path: String): Boolean {
         var flag = false
         val file = File(path)
         if (!file.exists()) {
@@ -187,7 +187,7 @@ class FileUtil private constructor() {
      * @throws UnsupportedEncodingException
      */
     @Throws(FileNotFoundException::class, UnsupportedEncodingException::class)
-    private fun getWriter(path: String?): BufferedWriter {
+     fun getWriter(path: String?): BufferedWriter {
         var fileout: FileOutputStream? = null
         fileout = FileOutputStream(File(path))
         var writer: OutputStreamWriter? = null
@@ -196,7 +196,7 @@ class FileUtil private constructor() {
     }
 
     @Throws(FileNotFoundException::class)
-    private fun getInputStream(path: String): InputStream? {
+     fun getInputStream(path: String): InputStream? {
         // if(Comments.DEBUG) System.out.println("path:"+path);
         var filein: FileInputStream? = null
         // if(Comments.DEBUG) System.out.println("2");
@@ -224,7 +224,7 @@ class FileUtil private constructor() {
      * @param inputStream
      * @return
      */
-    private fun writeFromInputToSD(path: String, inputStream: InputStream): File? {
+     fun writeFromInputToSD(path: String, inputStream: InputStream): File? {
         var file: File? = null
         var output: OutputStream? = null
         try {
@@ -254,7 +254,7 @@ class FileUtil private constructor() {
      * @param path
      * @return
      */
-    private fun writeFromInputToSD(path: String, b: ByteArray?): File? {
+     fun writeFromInputToSD(path: String, b: ByteArray?): File? {
         var file: File? = null
         var output: OutputStream? = null
         try {

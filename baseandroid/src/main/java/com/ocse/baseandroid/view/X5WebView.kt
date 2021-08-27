@@ -15,19 +15,36 @@ import com.tencent.smtt.sdk.WebViewClient
  */
 class X5WebView : WebView {
     constructor(context: Context) : super(context)
-    constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)
-    constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) : super(context,
+    constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet) {
+        this.webViewClient = client
+        initWebViewSettings()
+        this.view.isClickable = true
+    }
+
+    constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) : super(
+        context,
         attributeSet,
-        defStyleAttr)
+        defStyleAttr
+    ) {
+        this.webViewClient = client
+        initWebViewSettings()
+        this.view.isClickable = true
+    }
 
     constructor(
         context: Context,
         attributeSet: AttributeSet,
         defStyleAttr: Int,
         boolean: Boolean
-    ) : super(context,
+    ) : super(
+        context,
         attributeSet,
-        defStyleAttr, boolean)
+        defStyleAttr, boolean
+    ) {
+        this.webViewClient = client
+        initWebViewSettings()
+        this.view.isClickable = true
+    }
 
     private val client: WebViewClient =
         object : WebViewClient() {
@@ -57,7 +74,7 @@ class X5WebView : WebView {
             }
         }
 
-     fun initWebViewSettings() :WebSettings{
+    private fun initWebViewSettings(): WebSettings {
         val webSetting = this.settings
         //禁用滑动按钮
         if (this.x5WebViewExtension != null) {
@@ -114,12 +131,10 @@ class X5WebView : WebView {
 
         // this.getSettingsExtension().setPageCacheCapacity(IX5WebSettings.DEFAULT_CACHE_CAPACITY);//extension
         // settings 的设计
-         return webSetting
+        return webSetting
     }
 
     init {
-        this.webViewClient = client
-        initWebViewSettings()
-        this.view.isClickable = true
+
     }
 }
