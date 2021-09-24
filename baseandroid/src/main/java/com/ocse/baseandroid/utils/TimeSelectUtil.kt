@@ -10,8 +10,7 @@ import java.util.*
 open class TimeSelectUtil {
     companion object {
 
-
-        fun getDateTime(mContext: Context, tv: TextView) {
+        fun getDateTimeSeconds(mContext: Context, tv: TextView) {
             tv.setOnClickListener {
                 val c = Calendar.getInstance()
                 DatePickerDialog(
@@ -54,7 +53,7 @@ open class TimeSelectUtil {
             }
         }
 
-        fun init(mContext: Context, tv: TextView) {
+        fun initHourMin(mContext: Context, tv: TextView) {
             tv.setOnClickListener {
                 val c = Calendar.getInstance()
                 TimePickerDialog(
@@ -80,7 +79,7 @@ open class TimeSelectUtil {
 
         }
 
-        fun initDate(mContext: Context, tv: TextView) {
+        fun initDateYearMonthDay(mContext: Context, tv: TextView) {
             tv.setOnClickListener {
                 val c = Calendar.getInstance()
                 DatePickerDialog(
@@ -105,7 +104,7 @@ open class TimeSelectUtil {
             }
         }
 
-        fun initDate(mContext: Context, tv: TextView, callBack: TimeCallBack) {
+        fun initDateYearMonthDay(mContext: Context, tv: TextView, callBack: TimeCallBack) {
             tv.setOnClickListener {
                 val c = Calendar.getInstance()
                 DatePickerDialog(

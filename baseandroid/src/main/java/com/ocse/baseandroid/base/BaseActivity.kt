@@ -146,12 +146,12 @@ abstract class BaseActivity<V : ViewDataBinding>(getLayoutId: Int) :
         }
     }
 
-    private fun setBarColor(color: Int, isDarkFont: Boolean) {
+    open fun setBarColor(color: Int, isDarkFont: Boolean) {
         ImmersionBar.with(this).statusBarColor(color).statusBarDarkFont(isDarkFont).init()
 
     }
 
-    private fun transparentStatusBar(isDarkFont: Boolean) {
+    open fun transparentStatusBar(isDarkFont: Boolean) {
         ImmersionBar.with(this).transparentStatusBar().statusBarDarkFont(isDarkFont).init()
     }
 
