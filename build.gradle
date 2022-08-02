@@ -1,10 +1,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlin_version = "1.5.10"
+    ext.kotlin_version = "1.6.10"
 
     repositories {
         google()
-        mavenCentral()
+//        mavenCentral()
         maven { url 'https://jitpack.io' }
         maven { url "https://oss.jfrog.org/libs-snapshot" }
         maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
@@ -12,6 +12,8 @@ buildscript {
         maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
         maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url "https://maven.aliyun.com/repository/public" }
+
         flatDir {
             dirs 'libs' //this way we can find the .aar file in libs folder
         }
@@ -29,7 +31,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        mavenCentral()
+//        mavenCentral()
         maven { url 'https://jitpack.io' }
         maven { url "https://oss.jfrog.org/libs-snapshot" }
         maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }

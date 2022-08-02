@@ -24,8 +24,8 @@ class FileToUriUtils {
 //      Cursor cursor = this.context.managedQuery(selectedVideoUri, filePathColumn, null, null, null);
             cursor?.moveToFirst()
             if (cursor != null) {
-                val columnIndex: Int = cursor?.getColumnIndex(filePathColumn[0])
-                filePath = cursor?.getString(columnIndex)
+                val columnIndex: Int? = cursor?.getColumnIndex(filePathColumn[0])
+                filePath = columnIndex?.let { cursor?.getString(it).toString() }.toString()
             }
 
             cursor?.close()

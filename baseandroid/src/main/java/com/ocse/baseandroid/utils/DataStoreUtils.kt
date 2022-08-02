@@ -1,31 +1,36 @@
 package com.ocse.baseandroid.utils
 
+import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.preferencesKey
-import androidx.datastore.preferences.createDataStore
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 
 class DataStoreUtils() {
-    companion object{
-        private val dataStore: DataStore<Preferences> = ObtainApplication.getApp().createDataStore(
-            name = "DataStoreUtils"
-        )
+    companion object {
+        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "DataStoreUtils")
+        private val dataStore: DataStore<Preferences> = ObtainApplication.getApp().dataStore
 
-         fun getString(key: String): Flow<String> {
-            return dataStore.data.map {
-                it[preferencesKey<String>(key)] ?: ""
+        fun getString(key: String): String {
+            var returnValue = ""
+            runBlocking {
+                dataStore.data.first {
+                    returnValue = it[stringPreferencesKey(key)] ?: returnValue
+                    true
+                }
             }
+            return returnValue
         }
 
-        suspend fun setString(key: String, value: String) {
-            dataStore.edit {
-                it[preferencesKey<String>(key)] = value
-            }
+         fun setString(key: String, value: String) {
+             runBlocking {  dataStore.edit {
+                 it[stringPreferencesKey(key)] = value
+             } }
+
         }
     }
-
 }

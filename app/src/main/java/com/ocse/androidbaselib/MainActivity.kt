@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import com.ocse.androidbaselib.databinding.ActivityMainBinding
 import com.ocse.androidbaselib.model.BaseModel
 import com.ocse.baseandroid.base.BaseActivity
+import com.ocse.baseandroid.utils.DataStoreUtils
 import com.ocse.baseandroid.utils.DensityUtil
 import com.ocse.baseandroid.utils.GlideEngine
 import com.ocse.baseandroid.utils.ToastUtil
@@ -46,6 +47,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         val sd = ArrayList<String>()
         repeat(sd.size)
         {}
+        DataStoreUtils.setString("hu","hujiayi")
+
         dataBinding.textView.setOnClickListener {
 //            val loadingView = LoadingView.Builder(mContext)
 //            loadingView.setMessage("123")
@@ -78,6 +81,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         setMainTextView("123")
         dataBinding. button.setOnClickListener {
             ToastUtil.show("1234")
+            Log.e("TAG", "getString: ${DataStoreUtils.getString("hu")}")
             val intent = Intent(this, MainActivity2::class.java)
             // create the transition animation - the images in the layouts
             // of both activities are defined with android:transitionName="robot"

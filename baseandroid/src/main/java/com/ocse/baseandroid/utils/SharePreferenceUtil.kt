@@ -17,11 +17,11 @@ object SharePreferenceUtil {
         editor.commit()
     }
 
-    fun getString(key: String?): String? {
+    fun getString(key: String?): String {
         val sharedPreferences: SharedPreferences = ObtainApplication.getApp()!!.getSharedPreferences(
             ObtainApplication.getApp()!!.packageName,
             Context.MODE_PRIVATE
         )!!
-        return sharedPreferences.getString(key, "")
+        return  if (sharedPreferences.getString(key, "").isNullOrEmpty()) "" else sharedPreferences.getString(key, "").toString()
     }
 }
