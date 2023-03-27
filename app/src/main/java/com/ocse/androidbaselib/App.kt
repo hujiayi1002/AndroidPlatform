@@ -10,5 +10,6 @@ class App:BaseApplication() {
         super.onCreate()
         ApiRetrofitManager.init("http://10.81.108.88:8090/")
         MyLog.setLoggerEnable(true)
+        isShowForeground=true
     }
 }

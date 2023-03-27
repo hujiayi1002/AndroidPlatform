@@ -39,14 +39,18 @@ object DateUtils {
     private val sFormatOtherYearNoHour =
         SimpleDateFormat("yy/MM/dd")
     private val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-
+/**
+ *    Date转 str
+ */
     @Throws(ParseException::class)
     fun formatDate(date: Date): String {
         synchronized(
             sdf
         ) { return sdf.format(date) }
     }
-
+/**
+ * str转 Date
+ */
     @Throws(ParseException::class)
     fun parse(strDate: String): Date? {
         synchronized(
@@ -174,7 +178,7 @@ object DateUtils {
         return format.format(d)
     }
 
-    /*时间戳转换成字符窜*/
+    /*时间戳转换成字符*/
     fun getActDateToString(time: Long): String {
         val d = Date(time)
         return SimpleDateFormat(
@@ -257,19 +261,17 @@ object DateUtils {
         return "$startStr-$endStr"
     }
 
-    fun dayToNow(time: Long, context: Context?): String {
-        return dayToNow(time, true, context)
+    fun dayToNow(time: Long): String {
+        return dayToNow(time, true)
     }
 
-    fun dayToTime(time: Long, context: Context?): String {
-        return dayToTime(time, true, context)
+    fun dayToTime(time: Long): String {
+        return dayToTime(time, true)
     }
 
     private fun dayToNow(
         time: Long,
-        displayHour: Boolean,
-        context: Context?
-    ): String {
+        displayHour: Boolean, ): String {
         val timeMill = time * 1000
         val nowMill = System.currentTimeMillis()
         val minute = (nowMill - timeMill) / 60000
@@ -310,8 +312,7 @@ object DateUtils {
 
     private fun dayToTime(
         time: Long,
-        displayHour: Boolean,
-        context: Context?
+        displayHour: Boolean
     ): String {
         val timeMill = time * 1000
         val nowMill = System.currentTimeMillis()
@@ -420,6 +421,6 @@ object DateUtils {
         val end = endHour * 60
         val minuteOfDay = hour.toInt() * 60 + minute.toInt()
         MyLog.e("stf--hour:minute-->$hour:$minute")
-        return minuteOfDay >= start && minuteOfDay <= end
+        return minuteOfDay in start..end
     }
 }

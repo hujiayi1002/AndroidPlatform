@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit
  * @author hujiayi
  */
 open class BaseRetrofit {
-    var uRL: String? = null
+    private var baseUrl: String? = null
 
     /**
      * 统一header
@@ -28,9 +28,8 @@ open class BaseRetrofit {
     private val mHeaderMap: MutableMap<String, Any> = HashMap()
 
     private fun setRetrofit(): Retrofit? {
-        uRL= ApiRetrofitManager.getInitUrl()
-//        Logger.e("setRetrofit: $uRL")
-        if (uRL.isNullOrEmpty()) {
+        baseUrl= ApiRetrofitManager.getBaseUrl()
+        if (baseUrl.isNullOrEmpty()) {
             throw Exception("请先设置BaseUrl")
         }
         if (retrofit == null) {
@@ -42,12 +41,14 @@ open class BaseRetrofit {
                 .readTimeout(20, TimeUnit.SECONDS)
                 .writeTimeout(20, TimeUnit.SECONDS)
                 .build()
-            retrofit = Retrofit.Builder() //基地址
-                .baseUrl(uRL)
-                .client(okHttpClientBuilder!!.build())
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build()
+            retrofit = baseUrl?.let {
+                Retrofit.Builder() //基地址
+                    .baseUrl(it)
+                    .client(okHttpClientBuilder!!.build())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build()
+            }
         }
         return retrofit
     }
@@ -70,7 +71,7 @@ open class BaseRetrofit {
     fun addHeader(map: MutableMap<String, Any>?): BaseRetrofit {
         if (!map.isNullOrEmpty()) {
             val token = getString("token")
-            if (token == null || "" == token) {
+            if (token.isEmpty()) {
                 map["csrf-csrf"] = "csrf-csrf"
                 map["Content-Type"] = "pplication/x-www-form-urlencoded"
             }
@@ -86,7 +87,7 @@ open class BaseRetrofit {
      * @param <T>
      * @return
     </T> */
-    fun <T> createService(apiService: Class<T>?): T {
+    fun <T> createService(apiService: Class<T>): T {
         return getRetrofit()!!.create(apiService)
     }
 
@@ -99,28 +100,19 @@ open class BaseRetrofit {
     //假如设置为3次重试的话，则最大可能请求4次（默认1次+3次重试）
     private val retryNum = 0
 
-    private val mHeaderInterceptor = object : Interceptor {
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val request = chain.request().newBuilder()
-            if (mHeaderMap.isNotEmpty()) {
-                for ((key, value) in mHeaderMap) {
-                    request.addHeader(key, value.toString())
-                }
+    private val mHeaderInterceptor = Interceptor { chain ->
+        val request = chain.request().newBuilder()
+        if (mHeaderMap.isNotEmpty()) {
+            for ((key, value) in mHeaderMap) {
+                request.addHeader(key, value.toString())
             }
-            return chain.proceed(request.build())
         }
-
+        chain.proceed(request.build())
     }
     private val loggingInterceptor =
-        HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
-            override fun log(message: String) {
-                //打印retrofit日志
-//                Log.e("HttpLoggingInterceptor", "|-----------------网络日志-----------------｜")
-//                Log.e("HttpLoggingInterceptor", "|retrofitBack = $message                  |")
-//                Log.e("HttpLoggingInterceptor", "|__________________网络日志________________ |")
-                MyLog.e("$message")
-            }
-        }).setLevel(HttpLoggingInterceptor.Level.BODY)
+        HttpLoggingInterceptor { message -> //打印retrofit日志
+            MyLog.e("|-- HJY --|  $message")
+        }.setLevel(HttpLoggingInterceptor.Level.BODY)
 
     companion object {
         private var baseRetrofit: BaseRetrofit? = null

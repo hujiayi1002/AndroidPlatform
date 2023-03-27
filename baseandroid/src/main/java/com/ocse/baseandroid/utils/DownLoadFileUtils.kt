@@ -26,7 +26,7 @@ object DownLoadFileUtils {
             override fun onFailure(call: Call, e: IOException) {
                 // 下载失败
                 listener.onDownloadFailed()
-                Log.e("TAG", "onFailure: " + e.message)
+                MyLog.e("TAG", "onFailure: " + e.message)
             }
 
             @Throws(IOException::class)
@@ -39,7 +39,7 @@ object DownLoadFileUtils {
                 val buf = ByteArray(2048)
                 var len = 0
                 // 储存下载文件的目录
-                val savePath = ObtainApplication.getApp()!!.getExternalFilesDir("file")
+                val savePath = ObtainApplication.app!!.getExternalFilesDir("file")
                 try {
                     `is` = response.body!!.byteStream()
                     val total = response.body!!.contentLength()

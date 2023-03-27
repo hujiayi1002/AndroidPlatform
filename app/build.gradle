@@ -1,11 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.hujiayi1002'
 android {
     compileSdkVersion 32
-    buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "com.ocse.androidbaselib"
@@ -31,6 +29,7 @@ android {
         sourceCompatibility 1.8
         targetCompatibility 1.8
     }
+    namespace 'com.ocse.androidbaselib'
     //    //修改生成的最终文件名
     applicationVariants.all { variant ->
         variant.outputs.all { output ->

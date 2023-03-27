@@ -6,7 +6,7 @@ class ToastUtil {
     companion object {
         fun show(message: String?) {
             if (!isShowToast()) {
-                Toast.makeText(ObtainApplication.getApp(), message, Toast.LENGTH_SHORT)
+                Toast.makeText(ObtainApplication.app, message, Toast.LENGTH_SHORT)
                     .show()
             }
         }

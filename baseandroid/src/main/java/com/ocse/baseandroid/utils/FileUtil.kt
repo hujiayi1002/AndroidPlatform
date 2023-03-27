@@ -366,7 +366,7 @@ class FileUtil private constructor() {
     fun getAssetsInputStream(
         paramString: String?
     ): InputStream {
-        return ObtainApplication.getApp()!!.resources.assets.open(paramString!!)
+        return ObtainApplication.app!!.resources.assets.open(paramString!!)
     }
 
     companion object {

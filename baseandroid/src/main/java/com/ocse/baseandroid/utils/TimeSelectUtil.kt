@@ -1,45 +1,34 @@
 package com.ocse.baseandroid.utils
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.widget.TextView
+import java.text.SimpleDateFormat
 import java.util.*
 
+@SuppressLint("SetTextI18n", "SimpleDateFormat")
 open class TimeSelectUtil {
     companion object {
+        val c = Calendar.getInstance()
+        fun getNow(tv: TextView) {
+            tv.text = SimpleDateFormat("yyyy-MM:dd HH:mm:ss").format(System.currentTimeMillis())
+        }
 
-        fun getDateTimeSeconds(mContext: Context, tv: TextView) {
+        fun getNow(): String {
+            return SimpleDateFormat("yyyy-MM:dd HH:mm:ss").format(System.currentTimeMillis())
+        }
+
+        fun getDateTimeSeconds(tv: TextView) {
             tv.setOnClickListener {
-                val c = Calendar.getInstance()
                 DatePickerDialog(
-                    mContext,
-                    DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                        val monthString = if ((month + 1) < 10) {
-                            "0${month + 1}"
-                        } else {
-                            (month + 1).toString()
-                        }
-                        val day = if (dayOfMonth < 10) {
-                            "0${dayOfMonth}"
-                        } else {
-                            dayOfMonth.toString()
-                        }
+                    tv.context, { _, year, month, dayOfMonth ->
+
                         TimePickerDialog(
-                            mContext, AlertDialog.THEME_HOLO_LIGHT,
-                            TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                                val hour = if (hourOfDay < 10) {
-                                    "0${hourOfDay}"
-                                } else {
-                                    hourOfDay.toString()
-                                }
-                                val min = if (minute < 10) {
-                                    "0${minute}"
-                                } else {
-                                    minute.toString()
-                                }
-                                tv.text = "${year}-${monthString}-${day} ${hour}:${min}"
+                            tv.context, AlertDialog.THEME_HOLO_LIGHT, { _, hourOfDay, minute ->
+                                showText(tv, year, month, dayOfMonth, hourOfDay, minute)
                             },
                             c.get(Calendar.HOUR_OF_DAY),
                             c.get(Calendar.MINUTE),
@@ -53,23 +42,12 @@ open class TimeSelectUtil {
             }
         }
 
-        fun initHourMin(mContext: Context, tv: TextView) {
+        fun initHourMin(tv: TextView) {
             tv.setOnClickListener {
                 val c = Calendar.getInstance()
                 TimePickerDialog(
-                    mContext, AlertDialog.THEME_HOLO_LIGHT,
-                    TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                        val hour = if (hourOfDay < 10) {
-                            "0${hourOfDay}"
-                        } else {
-                            hourOfDay.toString()
-                        }
-                        val min = if (minute < 10) {
-                            "0${minute}"
-                        } else {
-                            minute.toString()
-                        }
-                        tv.text = "${hour}:${min}"
+                    tv.context, AlertDialog.THEME_HOLO_LIGHT, { _, hourOfDay, minute ->
+                        showText(tv, null, null, null, hourOfDay, minute)
                     },
                     c.get(Calendar.HOUR_OF_DAY),
                     c.get(Calendar.MINUTE),
@@ -79,23 +57,13 @@ open class TimeSelectUtil {
 
         }
 
-        fun initDateYearMonthDay(mContext: Context, tv: TextView) {
+        fun initYearMonthDay(tv: TextView) {
             tv.setOnClickListener {
                 val c = Calendar.getInstance()
                 DatePickerDialog(
-                    mContext,
-                    DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                        val monthString = if ((month + 1) < 10) {
-                            "0${month + 1}"
-                        } else {
-                            (month + 1).toString()
-                        }
-                        val day = if (dayOfMonth < 10) {
-                            "0${dayOfMonth}"
-                        } else {
-                            dayOfMonth.toString()
-                        }
-                        tv.text = "${year}-${monthString}-${day}"
+                    tv.context,
+                    { _, year, month, dayOfMonth ->
+                        showText(tv, year, month, dayOfMonth, null, null)
                     },
                     c.get(Calendar.YEAR),
                     c.get(Calendar.MONTH),
@@ -104,24 +72,13 @@ open class TimeSelectUtil {
             }
         }
 
-        fun initDateYearMonthDay(mContext: Context, tv: TextView, callBack: TimeCallBack) {
+        fun initYearMonthDay(tv: TextView, callBack: TimeCallBack) {
             tv.setOnClickListener {
-                val c = Calendar.getInstance()
+
                 DatePickerDialog(
-                    mContext,
-                    DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                        val monthString = if ((month + 1) < 10) {
-                            "0${month + 1}"
-                        } else {
-                            (month + 1).toString()
-                        }
-                        val day = if (dayOfMonth < 10) {
-                            "0${dayOfMonth}"
-                        } else {
-                            dayOfMonth.toString()
-                        }
-                        tv.text = "${year}-${monthString}-${day}"
-                        callBack.onDateSelected("${year}-${monthString}-${day}")
+                    tv.context, { _, year, month, dayOfMonth ->
+                        showText(tv, year, month, dayOfMonth, null, null)
+                        callBack.onDateSelected(tv.text.toString())
                     },
                     c.get(Calendar.YEAR),
                     c.get(Calendar.MONTH),
@@ -133,5 +90,48 @@ open class TimeSelectUtil {
         interface TimeCallBack {
             fun onDateSelected(date: String)
         }
+
+        private fun showText(
+            tv: TextView,
+            year: Int?,
+            month: Int?,
+            dayOfMonth: Int?,
+            hourOfDay: Int?,
+            minute: Int?,
+        ) {
+            val timeStr = StringBuilder()
+            year?.run { timeStr.append("$year") }
+            month?.run {
+                timeStr.append("-")
+                if ((month + 1) < 10) {
+                    timeStr.append("0")
+                }
+                timeStr.append("$month")
+            }
+            dayOfMonth?.run {
+                timeStr.append("-")
+                if (dayOfMonth < 10) {
+                    timeStr.append("0")
+                }
+                timeStr.append("$dayOfMonth")
+            }
+            hourOfDay?.run {
+                if (hourOfDay < 10) {
+                    timeStr.append("0")
+                }
+                if (timeStr.isNotEmpty()) timeStr.append(" ")
+                timeStr.append("$hourOfDay:")
+            }
+            minute?.run {
+                if (minute < 10) {
+                    timeStr.append("0")
+                }
+                timeStr.append("$minute:00")
+            }
+
+            tv.text = timeStr.toString()
+        }
     }
+
+
 }

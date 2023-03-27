@@ -8,7 +8,7 @@ import com.permissionx.guolindev.PermissionX
 class PermissionUtils {
     companion object{
         @SuppressLint("CheckResult")
-        open fun getPermission(mContext: FragmentActivity) {
+        fun getPermission(mContext: FragmentActivity) {
             PermissionX.init(mContext)
                 .permissions(Manifest.permission.CAMERA,
                     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -46,7 +46,7 @@ class PermissionUtils {
         }
 
         @SuppressLint("CheckResult")
-        open fun addPermission(mContext: FragmentActivity, vararg permissions: String?) {
+        fun addPermission(mContext: FragmentActivity, vararg permissions: String?) {
             PermissionX.init(mContext)
                 .permissions(permissions.contentToString())
                 .onExplainRequestReason { scope, deniedList ->

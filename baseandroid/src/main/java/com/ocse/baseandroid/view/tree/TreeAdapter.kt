@@ -19,17 +19,17 @@ open class TreeAdapter : TreeRecyclerAdapter {
     constructor(
         mTree: RecyclerView,
         context: Context,
-        datas: List<Node<Any, Any>>,
+        dataList: List<Node<Any, Any>>,
         defaultExpandLevel: Int
-    ) : super(mTree, context, datas, defaultExpandLevel)
+    ) : super(mTree, context, dataList, defaultExpandLevel)
 
     //直接调用
     constructor(
         mTree: RecyclerView,
         context: Context,
-        datas: List<Node<Any, Any>>,
+        dataList: List<Node<Any, Any>>,
     ) : super(
-        mTree, context, datas, 0, R.mipmap.tree_ex,
+        mTree, context, dataList, 0, R.mipmap.tree_ex,
         R.mipmap.tree_ec
     ) {
         mContext = context

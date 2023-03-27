@@ -4,13 +4,15 @@ import androidx.lifecycle.MutableLiveData
 import com.ocse.androidbaselib.bean.UserBean
 import com.ocse.androidbaselib.retrofit.ApiRetrofit.Companion.instance
 import com.ocse.baseandroid.base.BaseViewModel
+import kotlinx.coroutines.DelicateCoroutinesApi
 
 /**
  * @author hujiayi
  */
 class BaseModel : BaseViewModel() {
     val userMutableLiveData by lazy { MutableLiveData<UserBean>() }
-    val ss by lazy { MutableLiveData<UserBean>() }
+    val loginCn by lazy { MutableLiveData<UserBean>() }
+
 
     fun user() {
 //       instance.login("admin", "123456")
@@ -31,9 +33,10 @@ class BaseModel : BaseViewModel() {
 //            })
     }
 
-    fun ss() {
+    fun loginCn() {
         launch({
-            userMutableLiveData.postValue(instance.loginCn("admin", "123456"))
+            val data=instance.loginCn("admin", "123456")
+            userMutableLiveData.postValue(data)
         }, {
             userMutableLiveData
         })

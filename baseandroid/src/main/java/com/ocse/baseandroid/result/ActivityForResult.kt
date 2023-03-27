@@ -8,7 +8,9 @@ import io.reactivex.Observable
  * @author hujiayi
  */
 
-class ActivityForResult(activity: FragmentActivity) {
+class ActivityForResult {
+
+
     private val mAvoidOnResultFragment: AvoidOnResultFragment
     private fun getAvoidOnResultFragment(activity: FragmentActivity): AvoidOnResultFragment {
         var avoidOnResultFragment = findAvoidOnResultFragment(activity)
@@ -30,7 +32,7 @@ class ActivityForResult(activity: FragmentActivity) {
             .findFragmentByTag(TAG) as AvoidOnResultFragment?
     }
 
-    fun startForResult(intent: Intent?): Observable<ActivityResultInfo> {
+    private fun startForResult(intent: Intent?): Observable<ActivityResultInfo> {
         return mAvoidOnResultFragment.startForResult(intent)
     }
 
@@ -39,16 +41,16 @@ class ActivityForResult(activity: FragmentActivity) {
         return startForResult(intent)
     }
 
-     fun startForResult(
+    private fun startForResult(
         intent: Intent?,
-        callback: Callback?
+        callback: Callback?,
     ) {
         mAvoidOnResultFragment.startForResult(intent, callback)
     }
 
     fun startForResult(
         clazz: Class<*>?,
-        callback: Callback?
+        callback: Callback?,
     ) {
         val intent = Intent(mAvoidOnResultFragment.activity, clazz)
         startForResult(intent, callback)
@@ -60,6 +62,12 @@ class ActivityForResult(activity: FragmentActivity) {
 
     companion object {
         private const val TAG = "AvoidOnResult"
+        lateinit var activity: FragmentActivity
+        private val instance  by lazy{ ActivityForResult() }
+       fun with(activity:FragmentActivity):ActivityForResult{
+           this.activity=activity
+           return instance
+       }
     }
 
     init {

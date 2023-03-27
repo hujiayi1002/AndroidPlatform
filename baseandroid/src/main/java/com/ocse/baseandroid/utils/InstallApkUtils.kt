@@ -34,8 +34,8 @@ class InstallApkUtils {
         val versionCode: Int
             get() {
                 try {
-                    return ObtainApplication.getApp()!!.packageManager
-                        .getPackageInfo(ObtainApplication.getApp()!!.packageName, 0).versionCode
+                    return ObtainApplication.app!!.packageManager
+                        .getPackageInfo(ObtainApplication.app!!.packageName, 0).versionCode
                 } catch (ignored: PackageManager.NameNotFoundException) {
                 }
                 return 0
@@ -44,15 +44,15 @@ class InstallApkUtils {
         private val versionName: String?
             private get() {
                 try {
-                    return ObtainApplication.getApp()!!.packageManager
-                        .getPackageInfo(ObtainApplication.getApp()!!.packageName, 0).versionName
+                    return ObtainApplication.app!!.packageManager
+                        .getPackageInfo(ObtainApplication.app!!.packageName, 0).versionName
                 } catch (ignored: PackageManager.NameNotFoundException) {
                 }
                 return null
             }
 
         fun checkVersion(urlPath: String?, bt: String, isForce: Boolean) {
-            val view = LayoutInflater.from(ObtainApplication.getApp()!!.applicationContext)
+            val view = LayoutInflater.from(ObtainApplication.app!!.applicationContext)
                 .inflate(R.layout.layout_update_dialog, null)
             val builder =
                 AlertDialog.Builder(
@@ -79,7 +79,7 @@ class InstallApkUtils {
 
         private fun downLoadApk(urlPath: String?, bt: String) {
             val view =
-                LayoutInflater.from(ObtainApplication.getApp())
+                LayoutInflater.from(ObtainApplication.app)
                     .inflate(R.layout.download_layout, null)
             mProgress = view.findViewById(R.id.progressbar) as NumberProgressBar
             dialog =
@@ -124,17 +124,17 @@ class InstallApkUtils {
 
         private fun installPremission() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val isgtand = ObtainApplication. getApp()!!.packageManager.canRequestPackageInstalls()
+                val isgtand = ObtainApplication.app!!.packageManager.canRequestPackageInstalls()
                 if (isgtand) {
                 } else {
                     val packageURI =
-                        Uri.parse("package:" + ObtainApplication. getApp()!!.packageName);
+                        Uri.parse("package:" + ObtainApplication.app!!.packageName);
                     //注意这个是8.0新API
                     val intent = Intent(
                         Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
                         packageURI
                     )
-                    ObtainApplication. getApp()!!.startActivity(intent)
+                    ObtainApplication.app!!.startActivity(intent)
                 }
             }
         }
@@ -145,8 +145,8 @@ class InstallApkUtils {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 val contentUri =
                     FileProvider.getUriForFile(
-                        ObtainApplication. getApp()!!,
-                        ObtainApplication. getApp()!!.packageName + ".fileprovider",
+                        ObtainApplication.app!!,
+                        ObtainApplication.app!!.packageName + ".fileprovider",
                         file
                     )
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -156,7 +156,7 @@ class InstallApkUtils {
                 intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive")
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }
-            ObtainApplication.getApp()?.startActivity(intent)
+            ObtainApplication.app?.startActivity(intent)
         }
     }
 }

@@ -2,6 +2,7 @@ package com.ocse.androidbaselib
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.ocse.androidbaselib.databinding.ActivityMain2Binding
 
 class MainActivity2 : AppCompatActivity() {

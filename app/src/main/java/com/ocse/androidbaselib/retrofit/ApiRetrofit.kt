@@ -4,6 +4,7 @@ import android.util.Log
 import com.ocse.androidbaselib.bean.UserBean
 import com.ocse.androidbaselib.bean.VersionBean
 import com.ocse.baseandroid.net.retrofit.BaseRetrofit
+import com.ocse.baseandroid.utils.MyLog
 import com.ocse.baseandroid.utils.SharePreferenceUtil
 import io.reactivex.Observable
 import kotlin.collections.HashMap
@@ -17,9 +18,8 @@ class ApiRetrofit : BaseRetrofit() {
 
     private fun getApiService(): ApiService {
         val token = SharePreferenceUtil.getString("token")
-            Log.e("hu--token", token)
         val params: HashMap<String, Any> = HashMap()
-        if (token.isNullOrEmpty()) {
+        if (token.isEmpty()) {
             params["csrf-csrf"] = "csrf-csrf"
             params["Content-Type"] = "application/x-www-form-urlencoded"
 
@@ -33,8 +33,8 @@ class ApiRetrofit : BaseRetrofit() {
 
     fun login(
         user: String,
-        password: String
-    ) : Observable<UserBean> {
+        password: String,
+    ): Observable<UserBean> {
         val params: MutableMap<String, Any> = HashMap()
         params["username"] = user
         params["grant_type"] = "password"
@@ -42,12 +42,13 @@ class ApiRetrofit : BaseRetrofit() {
         params["password"] = password
         params["client_id"] = "my-client"
         params["openid"] = "123456789"
-       return switchSchedulers(getApiService().login(params))
+        return switchSchedulers(getApiService().login(params))
     }
-   suspend fun loginCn(
+
+    suspend fun loginCn(
         user: String,
-        password: String
-    ) : UserBean {
+        password: String,
+    ): UserBean {
         val params: MutableMap<String, Any> = HashMap()
         params["username"] = user
         params["grant_type"] = "password"
@@ -57,8 +58,9 @@ class ApiRetrofit : BaseRetrofit() {
         params["openid"] = "123456789"
         return getApiService().loginCn(params)
     }
+
     fun getversion(
-    ) : Observable<VersionBean> {
+    ): Observable<VersionBean> {
         val params: MutableMap<String, Any> = HashMap()
         return switchSchedulers(getApiService().getAppVersion(params))
     }

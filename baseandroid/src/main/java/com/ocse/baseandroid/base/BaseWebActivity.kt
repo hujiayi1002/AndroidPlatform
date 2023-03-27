@@ -96,7 +96,7 @@ abstract class BaseWebActivity : BaseActivity<ActivityBaseWebBinding>(R.layout.a
 
     private fun openTakePhotoChooseProcess() {
         EasyPhotos.createCamera(this, true)//参数说明：上下文
-            .setFileProviderAuthority("${ObtainApplication.getApp().packageName}.fileprovider")//参数说明：见下方`FileProvider的配置`
+            .setFileProviderAuthority("${ObtainApplication.app?.packageName}.fileprovider")//参数说明：见下方`FileProvider的配置`
             .start(object : SelectCallback() {
                 override fun onResult(photos: ArrayList<Photo>, isOriginal: Boolean) {
                     onReceiveValue(photos[0].path)
@@ -112,7 +112,7 @@ abstract class BaseWebActivity : BaseActivity<ActivityBaseWebBinding>(R.layout.a
 
     private fun onReceiveValue(originalUri: String?) {
         val file = File(originalUri)
-        if (!file.parentFile.exists()) file.parentFile.mkdirs()
+        if (!file.parentFile?.exists()!!) file.parentFile?.mkdirs()
         Luban.with(this)
             .load(file).ignoreBy(1024).setCompressListener(object : OnCompressListener {
                 override fun onStart() {
@@ -122,7 +122,7 @@ abstract class BaseWebActivity : BaseActivity<ActivityBaseWebBinding>(R.layout.a
                     val uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         FileProvider.getUriForFile(
                             this@BaseWebActivity,
-                            "${ObtainApplication.getApp().packageName}.fileprovider",
+                            "${ObtainApplication.app?.packageName}.fileprovider",
                             file
                         )
                     } else {

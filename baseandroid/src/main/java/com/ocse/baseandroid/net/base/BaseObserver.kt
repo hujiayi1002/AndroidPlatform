@@ -34,7 +34,7 @@ abstract class BaseObserver<T>(compositeDisposable: CompositeDisposable) :
     override fun onError(e: Throwable) {
         var reason = e.message
         //网络异常
-        if (!NetworkUtil.isConnected(ObtainApplication.getApp())) {
+        if (!NetworkUtil.isConnected(ObtainApplication.app)) {
             reason = "暂无网络，请检查网络"
         } else if (e is NetworkErrorException) {
             reason = "网络异常，请检查网络"

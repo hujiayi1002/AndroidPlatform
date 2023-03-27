@@ -40,7 +40,7 @@ class HtmlFromUtils {
                 val imgURL = images[0].source
                 // 使图片可点击并监听点击事件
                 output.setSpan(
-                    ClickableImage(ObtainApplication.getApp(), imgURL),
+                    ObtainApplication.app?.let { ClickableImage(it, imgURL) },
                     len - 1,
                     len,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE

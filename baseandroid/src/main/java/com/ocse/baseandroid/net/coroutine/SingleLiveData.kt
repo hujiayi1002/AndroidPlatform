@@ -5,6 +5,7 @@ import androidx.annotation.MainThread
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import com.ocse.baseandroid.utils.MyLog
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -18,7 +19,7 @@ class SingleLiveData<T> : MutableLiveData<T>() {
     override fun observe(owner: LifecycleOwner, observer: Observer<in T>) {
 
         if (hasActiveObservers()) {
-            Log.e(TAG, "多个只有一个接收")
+            MyLog.e(TAG, "多个只有一个接收")
         }
 
         super.observe(owner, Observer { t ->

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.ocse.baseandroid">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission
@@ -23,11 +22,24 @@
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".base.BaseRecyclerViewActivity"></activity>
-        <activity android:name=".view.ui.ShowVideoActivity" />
-        <activity android:name=".view.ui.ShowImageActivity" />
-        <activity android:name=".base.BaseWebActivity" />
-        <activity android:name=".view.ui.ShowWordViewActivity" />
+        <activity
+            android:name=".ShowPDFViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".base.BaseRecyclerViewActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.ui.ShowVideoActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.ui.ShowImageActivity"
+            android:exported="true" />
+        <activity
+            android:name=".base.BaseWebActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.ui.ShowWordViewActivity"
+            android:exported="true" />
 
         <service
             android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"

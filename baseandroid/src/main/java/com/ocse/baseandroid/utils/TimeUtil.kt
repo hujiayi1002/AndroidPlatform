@@ -65,7 +65,7 @@ class TimeUtil private constructor() {
                 millis = date.time
             } catch (e: ParseException) {
                 e.printStackTrace()
-                Log.e(
+                MyLog.e(
                     TAG,
                     "String2Millis Error ========> timeStr: $timeStr"
                 )
@@ -230,7 +230,7 @@ class TimeUtil private constructor() {
                     startTime.time
                 }
                 else -> {
-                    Log.e(
+                    MyLog.e(
                         TAG,
                         "Error startTime in the caculateTimeDiff () method ========> startTime: $startTime"
                     )
@@ -248,7 +248,7 @@ class TimeUtil private constructor() {
                     endTime.time
                 }
                 else -> {
-                    Log.e(
+                    MyLog.e(
                         TAG,
                         "Error endTime in the caculateTimeDiff () method ========> endTime: $endTime"
                     )

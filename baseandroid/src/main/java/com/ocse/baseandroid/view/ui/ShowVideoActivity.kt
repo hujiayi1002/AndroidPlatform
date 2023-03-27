@@ -19,8 +19,8 @@ class ShowVideoActivity : BaseActivity<ActivityShowVideoBinding>(R.layout.activi
     private var name = ""
 
     companion object {
-        const val Path = "path"
-        const val Name = "name"
+        private const val Path = "path"
+        private const val Name = "name"
         fun start(context: Context, name: String, path: String) {
             val intent = Intent(context, ShowVideoActivity::class.java)
             intent.putExtra(Path, path)

@@ -19,7 +19,7 @@ class ApiRetrofitManager {
                 show(e.message)
             }
         }
-        fun getInitUrl(): String {
+        fun getBaseUrl(): String {
             return url
         }
     }

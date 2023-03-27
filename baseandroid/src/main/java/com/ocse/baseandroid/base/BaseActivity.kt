@@ -30,8 +30,7 @@ abstract class BaseActivity<V : ViewDataBinding>(getLayoutId: Int) :
     val layout = getLayoutId
     lateinit var dataBinding: V
     private var mCompositeDisposable = CompositeDisposable()
-    val mContext by lazy { this@BaseActivity }
-    var isNeedDoubleExit = false
+    private val mContext by lazy { this@BaseActivity }
     private var exitTime = 0L
     private lateinit var relBack: RelativeLayout
     private lateinit var tvTitle: TextView
@@ -64,9 +63,13 @@ abstract class BaseActivity<V : ViewDataBinding>(getLayoutId: Int) :
 
     }
 
+    /**
+     * 设置标题
+     */
     open fun setMainTextView(title: String): TitleBuilder? {
         toolbar = findViewById(R.id.toolbar) ?: return null
-        val titleBuilder = TitleBuilder(title)
+        val titleStr = if (title.length > 8) "${title.substring(0, 8)}..." else title
+        val titleBuilder = TitleBuilder(titleStr)
         titleBuilder.setTitle()
         return titleBuilder
     }
@@ -77,10 +80,14 @@ abstract class BaseActivity<V : ViewDataBinding>(getLayoutId: Int) :
     infix fun start(cla: Class<*>) {
         startActivity(Intent(mContext, cla))
     }
+
     infix fun start(intent: Intent) {
         startActivity(intent)
     }
 
+    /**
+     * 防止连点
+     */
     infix fun View.singleClick(clickAction: () -> Unit) {
         this.setOnClickListener {
             if (this.hashCode() != hash) {
@@ -99,7 +106,7 @@ abstract class BaseActivity<V : ViewDataBinding>(getLayoutId: Int) :
     }
 
 
-    //    @SuppressLint("CheckResult")
+//    @SuppressLint("CheckResult")
 //    open fun getPermission() {
 //        val rxPermissions = RxPermissions(this)
 //        rxPermissions.request(
@@ -126,25 +133,20 @@ abstract class BaseActivity<V : ViewDataBinding>(getLayoutId: Int) :
 //            }
 //        }
 //    }
-
-    override fun onBackPressed() {
-        exit()
-    }
-
-    private fun exit() {
-        if (isNeedDoubleExit) {
-            if (System.currentTimeMillis() - exitTime > 2000) {
-                ToastUtil.show("再按一次退出程序")
-                exitTime = System.currentTimeMillis()
-            } else {
-                finish()
-                android.os.Process.killProcess(android.os.Process.myPid())
-                exitProcess(0)
-            }
+    /**
+     * 双击退出
+     */
+    open fun onDoubleBackPressed() {
+        if (System.currentTimeMillis() - exitTime > 2000) {
+            ToastUtil.show("再按一次退出程序")
+            exitTime = System.currentTimeMillis()
         } else {
             finish()
+            android.os.Process.killProcess(android.os.Process.myPid())
+            exitProcess(0)
         }
     }
+
 
     open fun setBarColor(color: Int, isDarkFont: Boolean) {
         ImmersionBar.with(this).statusBarColor(color).statusBarDarkFont(isDarkFont).init()
@@ -161,6 +163,15 @@ abstract class BaseActivity<V : ViewDataBinding>(getLayoutId: Int) :
      * @return
      */
     open fun <T : ViewModel> get(clazz: Class<T>): T {
+        return viewModelProvider[clazz]
+    }
+
+    /**
+     * 创建ViewModel对象
+     * @param clazz
+     * @return
+     */
+    open fun <T : ViewModel> getViewModel(clazz: Class<T>): T {
         return viewModelProvider[clazz]
     }
 

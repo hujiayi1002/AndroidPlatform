@@ -18,6 +18,7 @@ import com.gyf.immersionbar.ImmersionBar
 import com.ocse.baseandroid.R
 import com.ocse.baseandroid.databinding.ActivityWordViewBinding
 import com.ocse.baseandroid.utils.DownLoadFileUtils
+import com.ocse.baseandroid.utils.MyLog
 import com.ocse.baseandroid.utils.PermissionUtils
 import com.ocse.baseandroid.utils.WeakReferenceHandler
 import com.ocse.baseandroid.view.LoadingView
@@ -26,7 +27,7 @@ import com.tencent.smtt.sdk.TbsReaderView
 import okhttp3.*
 import java.io.File
 
-
+@Deprecated("x5内核收费,sdk下载经常超时,打算弃用")
 open class ShowWordViewActivity : AppCompatActivity(), TbsReaderView.ReaderCallback {
     private var url = ""
     private var fileName = ""
@@ -35,8 +36,8 @@ open class ShowWordViewActivity : AppCompatActivity(), TbsReaderView.ReaderCallb
     private lateinit var dataBinding: ActivityWordViewBinding
 
     companion object {
-        const val Path = "fileName"
-        const val Name = "url"
+        const val Path = "url"
+        const val Name = "fileName"
         fun start(context: Context, name: String, path: String) {
             val intent = Intent(context, ShowWordViewActivity::class.java)
             intent.putExtra(Path, path)
@@ -140,7 +141,7 @@ open class ShowWordViewActivity : AppCompatActivity(), TbsReaderView.ReaderCallb
             QbSdk.openFileReader(
                 this, renameFile.path, null
             ) { s ->
-                Log.e("TAG", "onReceiveValue:  $s")
+                MyLog.e("TAG", "onReceiveValue:  $s")
                 if (s == "fileReaderClosed") {
                     finish()
                 } else if (s == "filepath error") {

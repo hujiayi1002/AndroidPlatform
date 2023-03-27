@@ -8,18 +8,18 @@ import android.content.SharedPreferences
  */
 object SharePreferenceUtil {
     fun saveString(key: String?, value: String?) {
-        val sharedPreferences: SharedPreferences = ObtainApplication.getApp()!!.getSharedPreferences(
-            ObtainApplication.getApp()!!.packageName,
+        val sharedPreferences: SharedPreferences = ObtainApplication.app?.getSharedPreferences(
+            ObtainApplication.app?.packageName,
             Context.MODE_PRIVATE
         )!!
         val editor = sharedPreferences.edit()
         editor.putString(key, value)
-        editor.commit()
+        editor.apply()
     }
 
     fun getString(key: String?): String {
-        val sharedPreferences: SharedPreferences = ObtainApplication.getApp()!!.getSharedPreferences(
-            ObtainApplication.getApp()!!.packageName,
+        val sharedPreferences: SharedPreferences = ObtainApplication.app?.getSharedPreferences(
+            ObtainApplication.app?.packageName,
             Context.MODE_PRIVATE
         )!!
         return  if (sharedPreferences.getString(key, "").isNullOrEmpty()) "" else sharedPreferences.getString(key, "").toString()

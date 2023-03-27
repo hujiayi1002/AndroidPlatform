@@ -15,16 +15,6 @@ import com.ocse.baseandroid.R
 open class ChooseTakeBottomSheetDialog(context: Context) : BottomSheetDialogFragment() {
     private lateinit var choosePop: ChooseTake
     private lateinit var dataBind: ViewDataBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-//        val dataBind: PopChooseBinding =
-//            DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.pop_choose, null, false)
-//        val parms = LinearLayout.LayoutParams(
-//            LinearLayout.LayoutParams.MATCH_PARENT,
-//            LinearLayout.LayoutParams.MATCH_PARENT
-//        )
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -4,12 +4,12 @@
         android:icon="@drawable/ic_album_item_choose_easy_photos"
         android:title="主页" />
     <item
-        android:icon="@drawable/ic_album_items_name_easy_photos"
+        android:icon="@drawable/ic_album_item_choose_easy_photos"
         android:title="其他1" />
     <item
-        android:icon="@drawable/ic_arrow_up_easy_photos"
+        android:icon="@drawable/ic_album_item_choose_easy_photos"
         android:title="其他2" />
     <item
-        android:icon="@drawable/ic_arrow_up_easy_photos"
+        android:icon="@drawable/ic_album_item_choose_easy_photos"
         android:title="其他3" />
 </menu>

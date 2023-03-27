@@ -14,11 +14,8 @@ import com.ocse.baseandroid.utils.MyLog
 import com.ocse.baseandroid.utils.NetworkUtil
 import com.ocse.baseandroid.utils.ObtainApplication
 import com.ocse.baseandroid.utils.ToastUtil
-import io.reactivex.disposables.CompositeDisposable
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.ocse.baseandroid.view.LoadingView
+import kotlinx.coroutines.*
 import java.net.ConnectException
 import java.net.SocketException
 import java.net.SocketTimeoutException
@@ -30,25 +27,70 @@ import java.util.concurrent.TimeoutException
  * */
 open class BaseViewModel : ViewModel() {
 
-    open val compositeDisposable by lazy { CompositeDisposable() }
-
     //异常LiveData
-    val errorLiveData = SingleLiveData<Throwable>()
-
-    @DelicateCoroutinesApi
+    val errorLiveData =SingleLiveData <Throwable>()
+    /**
+     *onNext  处理数据;
+     *onError 异常;
+     */
     fun launch(
         onNext: suspend () -> Unit,
-        onError: suspend (Throwable) -> MutableLiveData<*>,
+        onError: suspend ()-> Unit,
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 onNext()
             } catch (e: Exception) {
-                onError(e).postValue(null)
-                //切换到主线程
-                GlobalScope.launch(Dispatchers.Main) {
+                onError()
+                withContext(Dispatchers.Main){
+                    //切换到主线程
                     ToastUtil.show(getError(e))
                 }
+            }
+        }
+    }
+    /**
+     *onNext  处理数据;
+     *isShowFailure 是否显示异常toast;
+     */
+    fun launch(
+        onNext: suspend () -> Unit,
+        isShowFailure:Boolean,
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                onNext()
+            } catch (e: Exception) {
+                if (isShowFailure){
+                    withContext(Dispatchers.Main){
+                        //切换到主线程
+                        ToastUtil.show(getError(e))
+                    }
+                }
+            }
+        }
+    }
+/**
+ *onNext  处理数据;
+ *onError 异常;
+ *isShowFailure 是否显示异常toast;
+ */
+    fun launch(
+        onNext: suspend () -> Unit,
+        onError: suspend ()-> Unit,
+        isShowFailure:Boolean,
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                onNext()
+            } catch (e: Exception) {
+                onError()
+              if (isShowFailure){
+                  withContext(Dispatchers.Main){
+                      //切换到主线程
+                      ToastUtil.show(getError(e))
+                  }
+              }
 
             }
         }
@@ -57,13 +99,13 @@ open class BaseViewModel : ViewModel() {
     private fun getError(e: Exception): String {
         var reason = e.message
         //网络异常
-        if (e is NetworkErrorException || !NetworkUtil.isConnected(ObtainApplication.getApp())) {
+        if (e is NetworkErrorException || !NetworkUtil.isConnected(ObtainApplication.app)) {
             reason = "网络异常，请检查网络后重试"
             //账户异常
         } else if (e is AccountsException) {
             reason = "账户异常"
             //socket异常--继承于SocketException
-        } else if (e is SocketException || e is ConnectException) {
+        } else if (e is SocketException ) {
             reason = "连接异常,请稍后重新连接"
             // http异常
 //        } else if (e is HttpException) {
@@ -79,12 +121,7 @@ open class BaseViewModel : ViewModel() {
         } else if (e is TimeoutException || e is SocketTimeoutException) {
             reason = "请求超时,请稍后重试"
         }
-        MyLog.e("Exception---${e.message}")
         return reason.toString()
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.clear()
-    }
 }

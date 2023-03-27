@@ -5,6 +5,12 @@ import com.ocse.baseandroid.BuildConfig
 
 
 class MyLog {
+    constructor()
+    constructor(msg: String?){
+        if (BuildConfig.DEBUG){
+            Log.e(TAG, "$msg")
+        }
+    }
     companion object {
         var TAG = "TAG"
         private var enable = false
@@ -19,21 +25,18 @@ class MyLog {
 
         fun e(msg: String?) {
             if (enable) {
-                Log.e(TAG, "_________________________________________________________________")
                 Log.e(TAG, "$msg")
             }
         }
 
         fun e(tag: String, msg: String?) {
             if (enable) {
-                Log.e(TAG, "_________________________________________________________________")
                 Log.e(tag, "$msg")
             }
         }
 
         fun d(msg: String?) {
             if (BuildConfig.DEBUG && !msg.isNullOrEmpty()) {
-                Log.d(TAG, "_________________________________________________________________")
                 Log.d(TAG, "" + msg)
             }
 
@@ -41,7 +44,6 @@ class MyLog {
 
         fun i(msg: String?) {
             if (BuildConfig.DEBUG && !msg.isNullOrEmpty()) {
-                Log.i(TAG, "_________________________________________________________________")
                 Log.i(TAG, "" + msg)
             }
 

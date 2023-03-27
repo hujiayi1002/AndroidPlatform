@@ -13,7 +13,7 @@ object DensityUtil {
      */
     fun dp2px(dpValue: Float): Int {
         val scale =
-            ObtainApplication.getApp()!!.resources.displayMetrics.density
+            ObtainApplication.app!!.resources.displayMetrics.density
         return (dpValue * scale + 0.5f).toInt()
     }
 
@@ -21,8 +21,12 @@ object DensityUtil {
      * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
      */
     fun px2dp(pxValue: Float): Int {
-        val scale =
-            ObtainApplication.getApp()!!.resources.displayMetrics.density
+        val scale = if (ObtainApplication.app!=null) {
+            ObtainApplication.app!!.resources.displayMetrics.density
+        }else {
+           1f
+        }
+
         return (pxValue / scale + 0.5f).toInt()
     }
 
@@ -34,7 +38,7 @@ object DensityUtil {
      */
     private  val screenHeight: Int
         get() {
-            val wm = ObtainApplication. getApp()!!
+            val wm = ObtainApplication.app!!
                 .getSystemService(Context.WINDOW_SERVICE) as WindowManager
             val outMetrics = DisplayMetrics()
             wm.defaultDisplay.getMetrics(outMetrics)
@@ -49,10 +53,11 @@ object DensityUtil {
      */
        val screenWidth: Int
         get() {
-            val wm = ObtainApplication.getApp()!!
-                .getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            val wm = ObtainApplication.app?.let {
+               it. getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            }
             val outMetrics = DisplayMetrics()
-            wm.defaultDisplay.getMetrics(outMetrics)
+            wm?.defaultDisplay?.getMetrics(outMetrics)
             return outMetrics.widthPixels
         }
 
@@ -94,7 +99,7 @@ object DensityUtil {
                 val `object` = clazz.newInstance()
                 val height = clazz.getField("status_bar_height")[`object`].toString().toInt()
                 statusHeight =
-                    ObtainApplication.getApp()!!.resources.getDimensionPixelSize(height)
+                    ObtainApplication.app?.resources?.getDimensionPixelSize(height)!!
             } catch (e: Exception) {
                 e.printStackTrace()
             }
