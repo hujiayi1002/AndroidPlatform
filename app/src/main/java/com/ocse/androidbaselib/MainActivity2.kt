@@ -1,21 +1,17 @@
 package com.ocse.androidbaselib
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.util.Log
 import com.ocse.androidbaselib.databinding.ActivityMain2Binding
+import com.ocse.baseandroid.base.BaseActivity
 
-class MainActivity2 : AppCompatActivity() {
-    private lateinit var binding: ActivityMain2Binding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMain2Binding.inflate(layoutInflater)
-        setContentView(binding.root)
-        initView()
-
+class MainActivity2 : BaseActivity<ActivityMain2Binding>() {
+    override fun initView() {
     }
 
-    private fun initView() {
+    override fun initData() {
+    }
+
+    override fun setTitleText(): String? {
+        return "666"
     }
 
 }

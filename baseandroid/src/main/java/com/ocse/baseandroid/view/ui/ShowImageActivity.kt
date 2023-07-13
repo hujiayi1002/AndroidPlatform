@@ -9,7 +9,7 @@ import com.ocse.baseandroid.utils.GlideEngine
 
 
 
-class ShowImageActivity : BaseActivity<ActivityShowImageBinding>(R.layout.activity_show_image) {
+class ShowImageActivity : BaseActivity<ActivityShowImageBinding>() {
     private var path = ""
     private var name = ""
 
@@ -36,7 +36,10 @@ class ShowImageActivity : BaseActivity<ActivityShowImageBinding>(R.layout.activi
             if (intent.getStringExtra(Name).isNullOrEmpty()) "图片" else intent.getStringExtra(Name)
                 .toString()
 
-        setMainTextView(name)
         GlideEngine.instance.loadPhoto(path, dataBinding.photoView)
+    }
+
+    override fun setTitleText(): String {
+        return name
     }
 }

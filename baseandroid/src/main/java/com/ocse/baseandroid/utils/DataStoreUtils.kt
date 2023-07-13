@@ -6,8 +6,11 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 
@@ -18,19 +21,20 @@ class DataStoreUtils {
 
         fun getString(key: String): String {
             var returnValue = ""
-            runBlocking {
-                dataStore.data.map{
+            CoroutineScope(Dispatchers.IO).launch {
+                dataStore.data.map {
                     returnValue = it[stringPreferencesKey(key)] ?: ""
-                    true
                 }
             }
             return returnValue
         }
 
-         fun setString(key: String, value: String) {
-             runBlocking {  dataStore.edit {
-                 it[stringPreferencesKey(key)] = value
-             } }
+        fun setString(key: String, value: String) {
+            CoroutineScope(Dispatchers.IO).launch {
+                dataStore.edit {
+                    it[stringPreferencesKey(key)] = value
+                }
+            }
 
         }
     }

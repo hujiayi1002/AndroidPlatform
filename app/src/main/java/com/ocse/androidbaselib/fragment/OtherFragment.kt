@@ -11,7 +11,7 @@ import com.ocse.baseandroid.base.BaseFragment
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class OtherFragment : BaseFragment<FragmentOtherBinding>(R.layout.fragment_other) {
+class OtherFragment : BaseFragment<FragmentOtherBinding>() {
     private var param1: String? = null
     private var param2: String? = null
 

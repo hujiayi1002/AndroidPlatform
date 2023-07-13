@@ -14,7 +14,7 @@ import com.tencent.smtt.sdk.WebViewClient
 /**
  *
  */
-class BaseWebFragment : BaseFragment<FragmentWebBinding>(R.layout.fragment_web) {
+class BaseWebFragment : BaseFragment<FragmentWebBinding>() {
     private var url = ""
     override fun onViewCreated(view: View) {
       val  loadingView = LoadingView.Builder(requireActivity()).create()

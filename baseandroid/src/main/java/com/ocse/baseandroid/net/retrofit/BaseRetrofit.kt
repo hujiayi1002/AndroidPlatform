@@ -8,7 +8,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -28,9 +27,9 @@ open class BaseRetrofit {
     private val mHeaderMap: MutableMap<String, Any> = HashMap()
 
     private fun setRetrofit(): Retrofit? {
-        baseUrl= ApiRetrofitManager.getBaseUrl()
+        baseUrl = ApiRetrofitManager.getBaseUrl()
         if (baseUrl.isNullOrEmpty()) {
-            throw Exception("请先设置BaseUrl")
+            throw NullPointerException("请先设置BaseUrl")
         }
         if (retrofit == null) {
             okHttpClientBuilder = OkHttpClient.Builder()
@@ -111,8 +110,18 @@ open class BaseRetrofit {
     }
     private val loggingInterceptor =
         HttpLoggingInterceptor { message -> //打印retrofit日志
-            MyLog.e("|-- HJY --|  $message")
+            if (isJson(message))
+                MyLog.e("|-- HJY --|  $message")
         }.setLevel(HttpLoggingInterceptor.Level.BODY)
+
+    private fun isJson(message: String): Boolean {
+        var isJson = false
+        val jsonSy = "{"
+        if (message.contains(jsonSy)) {
+            isJson = true
+        }
+        return isJson
+    }
 
     companion object {
         private var baseRetrofit: BaseRetrofit? = null

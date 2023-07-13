@@ -20,7 +20,7 @@ import com.ocse.baseandroid.view.LoadingView
 import com.tencent.smtt.sdk.QbSdk
 import java.io.File
 
-class ShowPDFViewActivity : BaseActivity<ActivityShowPdfviewBinding>(R.layout.activity_show_pdfview) {
+class ShowPDFViewActivity : BaseActivity<ActivityShowPdfviewBinding>() {
     private var url = ""
     private var fileName = ""
     private lateinit var loadingView: LoadingView
@@ -39,15 +39,20 @@ class ShowPDFViewActivity : BaseActivity<ActivityShowPdfviewBinding>(R.layout.ac
         dataBinding = ActivityShowPdfviewBinding.inflate(layoutInflater)
         ImmersionBar.with(this).transparentStatusBar().statusBarDarkFont(true).init()
         getPermission()
-
-        intent.getStringExtra(Name)?.let { fileName = it; setMainTextView(it)}
         intent.getStringExtra(Path)?.let { url = it;downLoadFile() }
     }
 
     override fun initData() {
     }
 
-
+    override fun setTitleText(): String? {
+      var fileName= intent.getStringExtra(Name)
+        if (!fileName.isNullOrEmpty()){
+            if(fileName.length>12){
+                fileName= fileName.substring(0,11) }
+        }
+        return fileName
+    }
 
 
     var mHandler: Handler = @SuppressLint("HandlerLeak")

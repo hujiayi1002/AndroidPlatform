@@ -5,6 +5,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.view.KeyEvent
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import com.huantansheng.easyphotos.EasyPhotos
 import com.huantansheng.easyphotos.callback.SelectCallback
@@ -25,7 +28,7 @@ import java.io.File
 import java.util.*
 
 
-abstract class BaseWebActivity : BaseActivity<ActivityBaseWebBinding>(R.layout.activity_base_web) {
+abstract class BaseWebActivity : BaseActivity<ActivityBaseWebBinding>() {
     private var url = ""
     private var path = ""
     private var uploadFiles: ValueCallback<Array<Uri>>? = null
@@ -51,7 +54,7 @@ abstract class BaseWebActivity : BaseActivity<ActivityBaseWebBinding>(R.layout.a
             override fun onShowFileChooser(
                 webView: WebView?,
                 filePathCallback: ValueCallback<Array<Uri>>,
-                fileChooserParams: FileChooserParams?
+                fileChooserParams: FileChooserParams?,
             ): Boolean {
                 uploadFiles = filePathCallback
                 val bottomSheetDialog = ChooseTakeBottomSheetDialog(this@BaseWebActivity)
@@ -140,8 +143,21 @@ abstract class BaseWebActivity : BaseActivity<ActivityBaseWebBinding>(R.layout.a
             }).launch()
     }
 
+    //val request = registerForActivityResult(
+    //    ActivityResultContracts.StartActivityForResult()
+    //) {
+    //    if (it.resultCode == Activity.RESULT_CANCELED) {
+    //        if (null != uploadFiles) {
+    //            uploadFiles?.onReceiveValue(null)
+    //            dataBinding.x5Web.loadUrl(url)
+    //            uploadFiles = null
+    //        }
+    //    }
+    //
+    //}
+
     override fun onActivityResult(
-        requestCode: Int, resultCode: Int, data: Intent?
+        requestCode: Int, resultCode: Int, data: Intent?,
     ) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_CANCELED) {

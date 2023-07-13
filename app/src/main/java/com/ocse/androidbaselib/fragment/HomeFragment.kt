@@ -8,7 +8,7 @@ import com.ocse.androidbaselib.databinding.FragmentHomeBinding
 import com.ocse.baseandroid.base.BaseFragment
 
 
-class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
+class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private var param1: String? = null
     private var param2: String? = null
     private  val ARG_PARAM1 = "param1"

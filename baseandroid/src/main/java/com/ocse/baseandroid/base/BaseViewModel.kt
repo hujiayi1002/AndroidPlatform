@@ -42,26 +42,22 @@ open class BaseViewModel : ViewModel() {
                 onNext()
             } catch (e: Exception) {
                 onError()
-                withContext(Dispatchers.Main){
-                    //切换到主线程
-                    ToastUtil.show(getError(e))
-                }
             }
         }
     }
     /**
      *onNext  处理数据;
-     *isShowFailure 是否显示异常toast;
+     *isShowError 是否显示异常toast;
      */
     fun launch(
         onNext: suspend () -> Unit,
-        isShowFailure:Boolean,
+        isShowError:Boolean,
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 onNext()
             } catch (e: Exception) {
-                if (isShowFailure){
+                if (isShowError){
                     withContext(Dispatchers.Main){
                         //切换到主线程
                         ToastUtil.show(getError(e))
@@ -73,19 +69,19 @@ open class BaseViewModel : ViewModel() {
 /**
  *onNext  处理数据;
  *onError 异常;
- *isShowFailure 是否显示异常toast;
+ *isShowError 是否显示异常toast;
  */
     fun launch(
         onNext: suspend () -> Unit,
         onError: suspend ()-> Unit,
-        isShowFailure:Boolean,
+        isShowError:Boolean,
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 onNext()
             } catch (e: Exception) {
                 onError()
-              if (isShowFailure){
+              if (isShowError){
                   withContext(Dispatchers.Main){
                       //切换到主线程
                       ToastUtil.show(getError(e))

@@ -13,7 +13,7 @@ import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import java.io.File
 
 
-class ShowVideoActivity : BaseActivity<ActivityShowVideoBinding>(R.layout.activity_show_video) {
+class ShowVideoActivity : BaseActivity<ActivityShowVideoBinding>() {
     private var orientationUtils: OrientationUtils? = null
     private var path = ""
     private var name = ""
@@ -37,7 +37,6 @@ class ShowVideoActivity : BaseActivity<ActivityShowVideoBinding>(R.layout.activi
             if (intent.getStringExtra(Name).isNullOrEmpty()) "视频" else intent.getStringExtra(Name)
                 .toString()
 
-        setMainTextView(name)
         //增加title
         dataBinding?.videoPlayer?.titleTextView?.visibility = View.VISIBLE
         //设置返回键
@@ -53,6 +52,13 @@ class ShowVideoActivity : BaseActivity<ActivityShowVideoBinding>(R.layout.activi
     }
 
     override fun initData() {
+    }
+
+    override fun setTitleText(): String? {
+        return if (intent.getStringExtra(Name)
+                .isNullOrEmpty()
+        ) "视频" else intent.getStringExtra(Name)
+            .toString()
     }
 
     fun initUrl() {

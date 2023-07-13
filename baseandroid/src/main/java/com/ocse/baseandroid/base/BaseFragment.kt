@@ -14,13 +14,17 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewbinding.ViewBinding
 import com.ocse.baseandroid.R
+import com.ocse.baseandroid.impl.saveAs
+import com.ocse.baseandroid.impl.saveAsUnChecked
 import com.ocse.baseandroid.view.LoadingView
+import java.lang.reflect.ParameterizedType
 
 /**
  * BaseFragment，处理ViewModelProvider的初始化
  * */
-abstract class BaseFragment<V : ViewDataBinding>(private val getBindView: Int) : Fragment() {
+abstract class BaseFragment<V : ViewBinding> : Fragment() {
     private lateinit var viewModelProvider: ViewModelProvider
     private lateinit var loadingView: LoadingView
     private var hash: Int = 0
@@ -38,10 +42,12 @@ abstract class BaseFragment<V : ViewDataBinding>(private val getBindView: Int) :
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
-        dataBinding =
-            DataBindingUtil.inflate(inflater, getBindView, container, false)
+        val type = javaClass.genericSuperclass
+        val vbClass: Class<V> = type!!.saveAs<ParameterizedType>().actualTypeArguments[0].saveAs()
+        val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
+        dataBinding = method.invoke(this, layoutInflater)!!.saveAsUnChecked()
         return dataBinding.root
     }
 
