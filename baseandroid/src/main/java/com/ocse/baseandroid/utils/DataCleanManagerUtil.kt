@@ -7,17 +7,33 @@ import java.io.File
 import java.math.BigDecimal
 
 object DataCleanManagerUtil {
-    //    获取缓存小
+    /**
+     * @param context Context
+     * @param path String? 缓存路径
+     * @return String  返回缓存大小
+     * @throws Exception
+     */
     @Throws(Exception::class)
-    fun getTotalCacheSize(context: Context): String {
+    fun getTotalCacheSize(context: Context, path: String?): String {
         //Context.getExternalCacheDir() --> SDCard/Android/data/你的应用包名/cache/目录，一般存放临时缓存数据
-        val cacheSize = getFolderSize(context.cacheDir)
+        var cacheSize = getFolderSize(context.cacheDir)
         //Context.getExternalFilesDir() --> SDCard/Android/data/你的应用的包名/files/ 目录，一般放一些长时间保存的数据
-
-//        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-//            cacheSize += getFolderSize(context.getExternalCacheDir());
-//        }
+        path?.let { cacheSize += getFolderSize(File(it)) }
         return getFormatSize(cacheSize.toDouble())
+    }
+
+    /**
+     * 默认返回cacheDir的大小
+     * @param context Context
+     * @return String  返回缓存大小
+     * @throws Exception
+     */
+    fun getTotalCacheSize(context: Context): String {
+        return getTotalCacheSize(context, null)
+    }
+
+    fun clearFileCache(filePath: String?) {
+        deleteFolderFile(filePath, true)
     }
 
     /**
@@ -102,18 +118,19 @@ object DataCleanManagerUtil {
      * @param context
      * @param filepath
      */
-    fun cleanApplicationData(context: Context, vararg filepath: String?) {
+    fun cleanAllCacheData(context: Context, vararg filepath: String?) {
         cleanInternalCache(context)
         cleanExternalCache(context)
         cleanDatabases(context)
         cleanSharedPreference(context)
         cleanFiles(context)
-        if (filepath == null) {
-            return
+        filepath?.let {
+            for (filePath in filepath) {
+                cleanCustomCache(filePath)
+            }
         }
-        for (filePath in filepath) {
-            cleanCustomCache(filePath)
-        }
+
+
     }
 
     /**
@@ -138,7 +155,7 @@ object DataCleanManagerUtil {
         try {
             val fileList = file.listFiles()
             for (i in fileList.indices) {
-// 如果下面还有文件
+                // 如果下面还有文件
                 size = if (fileList[i].isDirectory) {
                     size + getFolderSize(fileList[i])
                 } else {
@@ -153,8 +170,8 @@ object DataCleanManagerUtil {
 
     /**
      * 删除指定目录下文件及目录
-     *
-     * @param deleteThisPath
+     * @param filePath  删除的文件路径
+     * @param deleteThisPath 是否删除本身
      * @return
      */
     private fun deleteFolderFile(filePath: String?, deleteThisPath: Boolean) {
@@ -171,7 +188,7 @@ object DataCleanManagerUtil {
                     if (!file.isDirectory) { // 如果是文件，删除
                         file.delete()
                     } else { // 目录
-                        if (file.listFiles().size == 0) { // 目录下没有文件或者目录，删除
+                        if (file.listFiles()?.isEmpty() == true) { // 目录下没有文件或者目录，删除
                             file.delete()
                         }
                     }
@@ -188,7 +205,7 @@ object DataCleanManagerUtil {
      * @param size
      * @return
      */
-    private fun getFormatSize(size: Double): String {
+     fun getFormatSize(size: Double): String {
         val kiloByte = size / 1024
         if (kiloByte < 1) {
             return size.toString() + "B"
@@ -216,8 +233,14 @@ object DataCleanManagerUtil {
                 + "TB")
     }
 
+    /**
+     * 获取当前文件大小
+     * @param file File
+     * @return String
+     * @throws Exception
+     */
     @Throws(Exception::class)
-    fun getCacheSize(file: File): String {
+   private fun getCacheSize(file: File): String {
         return getFormatSize(getFolderSize(file).toDouble())
     }
 }
