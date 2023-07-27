@@ -9,6 +9,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.ocse.androidbaselib.databinding.ActivityMainBinding
 import com.ocse.androidbaselib.model.BaseModel
+import com.ocse.androidbaselib.utils.MySet
 import com.ocse.androidbaselib.utils.MyWorker
 import com.ocse.baseandroid.base.BaseVMActivity
 import com.ocse.baseandroid.utils.*
@@ -19,6 +20,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, BaseModel>() {
     override fun setTitleText(): String? {
         return "123"
     }
+
     override fun initView() {
         viewModel.userMutableLiveData.observe(this, Observer {
             Log.e("TAG", "onCreate: ,${it == null} ")
@@ -38,6 +40,21 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, BaseModel>() {
             }
             false
         }
+        var a = 1
+        val result = with(a) {
+            a = 2
+            a + 3
+        }
+        Log.e("TAG", "initView: $result ")//5
+        var b = ""
+        val res2 = b.run {
+            b = "222"
+            "哈哈"
+        } ?: {
+            b = "333"
+            "666"
+        }
+        Log.e("TAG", "initView: $res2 ")//5
 
         Log.e("TAG", "screenWidth: ${DensityUtil.screenWidth} ")
         GlideEngine.instance.loadPhotoCircle(
@@ -118,7 +135,9 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, BaseModel>() {
     }
 
     override fun initData() {
-
+        val hashMap=HashSet<String>()
+        val mySet = MySet(hashMap)
+        mySet.helloWorld()
     }
 
     /**
@@ -129,5 +148,6 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, BaseModel>() {
         val work = PeriodicWorkRequestBuilder<MyWorker>(1, TimeUnit.SECONDS).build()
         WorkManager.getInstance(this).enqueue(work)
     }
+
 
 }
