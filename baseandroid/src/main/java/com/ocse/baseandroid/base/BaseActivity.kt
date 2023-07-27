@@ -20,6 +20,7 @@ import com.gyf.immersionbar.ImmersionBar
 import com.ocse.baseandroid.R
 import com.ocse.baseandroid.impl.saveAs
 import com.ocse.baseandroid.impl.saveAsUnChecked
+import com.ocse.baseandroid.utils.KeyBordStateUtil
 import com.ocse.baseandroid.utils.ToastUtil
 import com.ocse.baseandroid.view.LoadingView
 import com.ocse.baseandroid.view.TitleBarView
@@ -42,6 +43,7 @@ abstract class BaseActivity<V : ViewBinding> : RootActivity() {
         dataBinding = method.invoke(this, layoutInflater)!!.saveAsUnChecked()
         setContentView(dataBinding.root)
         viewModelProvider = ViewModelProvider(this)
+
         initTitleBar(setTitleText())
     }
 
@@ -53,6 +55,7 @@ abstract class BaseActivity<V : ViewBinding> : RootActivity() {
         tvRight = toolbar.findViewById(R.id.tvRight)
         imgRight = toolbar.findViewById(R.id.imgRight)
         relBack.setOnClickListener { finish() }
+        KeyBordStateUtil.hideKeyBord()
         val titleStr =
             if (!title.isNullOrEmpty() && title.length > 8) "${title.substring(0, 8)}..." else title
         //toolbar.title = titleStr

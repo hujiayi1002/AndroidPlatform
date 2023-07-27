@@ -12,7 +12,9 @@ import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import java.io.File
 
-
+/**
+ * GSYPlayer展示视频
+ */
 class ShowVideoActivity : BaseActivity<ActivityShowVideoBinding>() {
     private var orientationUtils: OrientationUtils? = null
     private var path = ""

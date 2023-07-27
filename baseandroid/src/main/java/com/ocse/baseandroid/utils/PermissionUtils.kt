@@ -3,6 +3,7 @@ package com.ocse.baseandroid.utils
 import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
 import com.permissionx.guolindev.PermissionX
 
@@ -16,6 +17,7 @@ class PermissionUtils {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.LOCATION_HARDWARE,
         )
+        @RequiresApi(Build.VERSION_CODES.TIRAMISU)
         val android13Permission = arrayOf(
             Manifest.permission.READ_MEDIA_IMAGES,
             Manifest.permission.READ_MEDIA_VIDEO,

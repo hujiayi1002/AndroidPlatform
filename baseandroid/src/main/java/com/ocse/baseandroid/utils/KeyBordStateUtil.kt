@@ -2,10 +2,12 @@ package com.ocse.baseandroid.utils
 
 import android.R
 import android.app.Activity
+import android.content.Context
 import android.graphics.Rect
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import android.view.inputmethod.InputMethodManager
 import kotlin.math.abs
 
 /**
@@ -17,15 +19,16 @@ import kotlin.math.abs
  */
 class KeyBordStateUtil(context: Activity) {
     private var listener: OnKeyBordStateListener? = null
-    private val rootLayout: View? = (context.findViewById<View>(R.id.content) as ViewGroup).getChildAt(
-        0
-    )
+    private val rootLayout: View? =
+        (context.findViewById<View>(R.id.content) as ViewGroup).getChildAt(
+            0
+        )
     private var mVisibleHeight = 0
     private var mFirstVisibleHeight = 0
     private val mOnGlobalLayoutListener: OnGlobalLayoutListener? =
         OnGlobalLayoutListener { calKeyBordState() }
 
-    private fun calKeyBordState() {
+     private fun calKeyBordState() {
         val r = Rect()
         rootLayout!!.getWindowVisibleDisplayFrame(r)
         val visibleHeight = r.height()
@@ -51,6 +54,7 @@ class KeyBordStateUtil(context: Activity) {
             }
         }
     }
+
 
     fun addOnKeyBordStateListener(listener: OnKeyBordStateListener?) {
         this.listener = listener
@@ -82,4 +86,17 @@ class KeyBordStateUtil(context: Activity) {
     init {
         rootLayout?.viewTreeObserver?.addOnGlobalLayoutListener(mOnGlobalLayoutListener)
     }
+
+    companion object {
+        /**
+         * 隐藏键盘
+         */
+        fun hideKeyBord() {
+            val inputMethodManager = ObtainApplication.app!!.getSystemService(
+                Context.INPUT_METHOD_SERVICE
+            ) as InputMethodManager
+            inputMethodManager.toggleSoftInput(1000, InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
 }

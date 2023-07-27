@@ -34,7 +34,12 @@ class ShowPDFViewActivity : BaseActivity<ActivityShowPdfviewBinding>() {
             intent.putExtra(Name, name)
             context.startActivity(intent)
         }
+
+        fun startWPS() {
+
+        }
     }
+
     override fun initView() {
         dataBinding = ActivityShowPdfviewBinding.inflate(layoutInflater)
         ImmersionBar.with(this).transparentStatusBar().statusBarDarkFont(true).init()
@@ -46,10 +51,11 @@ class ShowPDFViewActivity : BaseActivity<ActivityShowPdfviewBinding>() {
     }
 
     override fun setTitleText(): String? {
-      var fileName= intent.getStringExtra(Name)
-        if (!fileName.isNullOrEmpty()){
-            if(fileName.length>12){
-                fileName= fileName.substring(0,11) }
+        var fileName = intent.getStringExtra(Name).toString()
+        if (!fileName.isNullOrEmpty()) {
+            if (fileName.length > 12) {
+                fileName = fileName.substring(0, 11)
+            }
         }
         return fileName
     }
@@ -95,7 +101,7 @@ class ShowPDFViewActivity : BaseActivity<ActivityShowPdfviewBinding>() {
     }
 
     private fun displayFile(file: File) {
-        if (file.name.contains(".pdf",true)) {
+        if (file.name.contains(".pdf", true)) {
             dataBinding.pdfView.fromFile(file).load()
         } else {
             QbSdk.openFileReader(this, file.path, null, null)

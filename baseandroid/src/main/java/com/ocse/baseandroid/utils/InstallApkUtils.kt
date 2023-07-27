@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Handler
+import android.os.Looper
 import android.os.Message
 import android.provider.Settings
 import android.view.LayoutInflater
@@ -31,27 +32,8 @@ class InstallApkUtils {
         init {
             installPremission()
         }
-        val versionCode: Int
-            get() {
-                try {
-                    return ObtainApplication.app!!.packageManager
-                        .getPackageInfo(ObtainApplication.app!!.packageName, 0).versionCode
-                } catch (ignored: PackageManager.NameNotFoundException) {
-                }
-                return 0
-            }
 
-        private val versionName: String?
-            private get() {
-                try {
-                    return ObtainApplication.app!!.packageManager
-                        .getPackageInfo(ObtainApplication.app!!.packageName, 0).versionName
-                } catch (ignored: PackageManager.NameNotFoundException) {
-                }
-                return null
-            }
-
-        fun checkVersion(urlPath: String?, bt: String, isForce: Boolean) {
+        fun checkVersion(urlPath: String,  isForce: Boolean) {
             val view = LayoutInflater.from(ObtainApplication.app!!.applicationContext)
                 .inflate(R.layout.layout_update_dialog, null)
             val builder =
@@ -66,7 +48,7 @@ class InstallApkUtils {
             val dialog = builder.create()
             binding.tvNoUpgrade.setOnClickListener { dialog.dismiss() }
             binding.tvNoUpgrade.setOnClickListener {
-                downLoadApk(urlPath, bt)
+                downLoadApk(urlPath)
                 dialog.dismiss()
 
             }
@@ -77,7 +59,7 @@ class InstallApkUtils {
         }
 
 
-        private fun downLoadApk(urlPath: String?, bt: String) {
+        private fun downLoadApk(urlPath: String) {
             val view =
                 LayoutInflater.from(ObtainApplication.app)
                     .inflate(R.layout.download_layout, null)
@@ -87,7 +69,7 @@ class InstallApkUtils {
                     .setView(view)
                     .setCancelable(false).show()
 
-            DownLoadFileUtils.download(urlPath, bt, object : DownLoadFileUtils.OnDownloadListener {
+            DownLoadFileUtils.download(urlPath, "1.apk", object : DownLoadFileUtils.OnDownloadListener {
 
                 override fun onDownloading(progress: Int) {
                     val message = Message()
@@ -108,7 +90,7 @@ class InstallApkUtils {
             })
         }
 
-        var handler = object : Handler() {
+        var handler = object : Handler(Looper.getMainLooper()) {
             override fun handleMessage(msg: Message) {
                 super.handleMessage(msg)
                 when (msg.what) {

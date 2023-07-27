@@ -8,7 +8,9 @@ import com.ocse.baseandroid.databinding.ActivityShowImageBinding
 import com.ocse.baseandroid.utils.GlideEngine
 
 
-
+/**
+ *   展示照片
+ */
 class ShowImageActivity : BaseActivity<ActivityShowImageBinding>() {
     private var path = ""
     private var name = ""
