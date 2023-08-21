@@ -8,8 +8,7 @@ class FileUtil private constructor() {
      * @param path 传入路径字符串
      * @return File
      */
-     fun createFileIfNotExist(path: String): File {
-        println("cr")
+    open fun createFileIfNotExist(path: String): File {
         val file = File(path)
         if (!file.exists()) {
             try {

@@ -48,7 +48,9 @@ open class ShowWordViewActivity : AppCompatActivity(), TbsReaderView.ReaderCallb
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_word_view)
+        //dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_word_view)
+        dataBinding = ActivityWordViewBinding.inflate(layoutInflater)
+        setContentView(dataBinding.root)
         ImmersionBar.with(this).transparentStatusBar().statusBarDarkFont(true).init()
         intent.getStringExtra(Name)?.let { fileName = it }
         intent.getStringExtra(Path)?.let { url = it;downLoadFile() }

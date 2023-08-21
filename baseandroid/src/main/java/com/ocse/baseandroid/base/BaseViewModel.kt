@@ -28,14 +28,15 @@ import java.util.concurrent.TimeoutException
 open class BaseViewModel : ViewModel() {
 
     //异常LiveData
-    val errorLiveData =SingleLiveData <Throwable>()
+    val errorLiveData = SingleLiveData<Throwable>()
+
     /**
      *onNext  处理数据;
      *onError 异常;
      */
     fun launch(
         onNext: suspend () -> Unit,
-        onError: suspend ()-> Unit,
+        onError: suspend () -> Unit,
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -45,20 +46,21 @@ open class BaseViewModel : ViewModel() {
             }
         }
     }
+
     /**
      *onNext  处理数据;
      *isShowError 是否显示异常toast;
      */
     fun launch(
         onNext: suspend () -> Unit,
-        isShowError:Boolean,
+        isShowError: Boolean,
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 onNext()
             } catch (e: Exception) {
-                if (isShowError){
-                    withContext(Dispatchers.Main){
+                if (isShowError) {
+                    withContext(Dispatchers.Main) {
                         //切换到主线程
                         ToastUtil.show(getError(e))
                     }
@@ -66,42 +68,43 @@ open class BaseViewModel : ViewModel() {
             }
         }
     }
-/**
- *onNext  处理数据;
- *onError 异常;
- *isShowError 是否显示异常toast;
- */
+
+    /**
+     *onNext  处理数据;
+     *onError 异常;
+     *isShowError 是否显示异常toast;
+     */
     fun launch(
         onNext: suspend () -> Unit,
-        onError: suspend ()-> Unit,
-        isShowError:Boolean,
+        onError: suspend (e: Exception) -> Unit,
+        isShowError: Boolean,
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 onNext()
             } catch (e: Exception) {
-                onError()
-              if (isShowError){
-                  withContext(Dispatchers.Main){
-                      //切换到主线程
-                      ToastUtil.show(getError(e))
-                  }
-              }
+                onError(e)
+                if (isShowError) {
+                    withContext(Dispatchers.Main) {
+                        //切换到主线程
+                        ToastUtil.show(getError(e))
+                    }
+                }
 
             }
         }
     }
 
-    private fun getError(e: Exception): String {
+    open fun getError(e: Exception): String {
         var reason = e.message
         //网络异常
-        if (e is NetworkErrorException || !NetworkUtil.isConnected(ObtainApplication.app)) {
+        if (e is NetworkErrorException || !NetworkUtil.getActiveNetworkInfo(ObtainApplication.app)) {
             reason = "网络异常，请检查网络后重试"
             //账户异常
         } else if (e is AccountsException) {
             reason = "账户异常"
             //socket异常--继承于SocketException
-        } else if (e is SocketException ) {
+        } else if (e is SocketException) {
             reason = "连接异常,请稍后重新连接"
             // http异常
 //        } else if (e is HttpException) {

@@ -16,20 +16,6 @@ open class BaseApplication : Application() {
 
     private var count = 0
 
-
-    //init {
-    //    SmartRefreshLayout.setDefaultRefreshHeaderCreator { context, layout ->
-    //        //全局设置主题颜色
-    //        layout.setPrimaryColorsId(R.color.bgColor, android.R.color.black)
-    //        ClassicsHeader(context)
-    //    }
-    //    SmartRefreshLayout.setDefaultRefreshFooterCreator() { context, layout ->
-    //        //全局设置主题颜色
-    //        layout.setPrimaryColorsId(R.color.bgColor, android.R.color.black)
-    //        ClassicsFooter(context)
-    //    }
-    //}
-
     override fun onCreate() {
         super.onCreate()
         RxJavaPlugins.setErrorHandler {

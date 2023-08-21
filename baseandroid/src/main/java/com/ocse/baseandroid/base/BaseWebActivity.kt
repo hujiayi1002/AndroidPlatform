@@ -5,14 +5,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.view.KeyEvent
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultCallback
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import com.huantansheng.easyphotos.EasyPhotos
 import com.huantansheng.easyphotos.callback.SelectCallback
 import com.huantansheng.easyphotos.models.album.entity.Photo
-import com.ocse.baseandroid.R
 import com.ocse.baseandroid.databinding.ActivityBaseWebBinding
 import com.ocse.baseandroid.js.BaseJSScript
 import com.ocse.baseandroid.utils.GlideEngine
@@ -30,7 +26,6 @@ import java.util.*
 
 abstract class BaseWebActivity : BaseActivity<ActivityBaseWebBinding>() {
     private var url = ""
-    private var path = ""
     private var uploadFiles: ValueCallback<Array<Uri>>? = null
     abstract fun setUrl(): String
     override fun initView() {
@@ -171,7 +166,7 @@ abstract class BaseWebActivity : BaseActivity<ActivityBaseWebBinding>() {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (dataBinding.x5Web.canGoBack()!!) {
+            if (dataBinding.x5Web.canGoBack()) {
                 dataBinding.x5Web.goBack()
             } else {
                 finish()

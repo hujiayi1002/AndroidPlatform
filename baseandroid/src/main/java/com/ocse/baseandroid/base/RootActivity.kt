@@ -2,26 +2,12 @@ package com.ocse.baseandroid.base
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import com.gyf.immersionbar.ImmersionBar
-import com.ocse.baseandroid.R
-import com.ocse.baseandroid.impl.saveAs
 import com.ocse.baseandroid.utils.ActivityStackUtils
 import com.ocse.baseandroid.utils.ToastUtil
 import com.ocse.baseandroid.view.LoadingView
-import com.ocse.baseandroid.view.TitleBarView
-import java.lang.reflect.ParameterizedType
 import kotlin.system.exitProcess
 
 
@@ -39,16 +25,11 @@ abstract class RootActivity : AppCompatActivity {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        transparentStatusBar(true)
         ActivityStackUtils.addActivity(this)
         loadingViewView = LoadingView.Builder(this).create()
         initContent()
-        initView()
-        initData()
     }
 
-    abstract fun initView()
-    abstract fun initData()
     infix fun start(cla: Class<*>) {
         startActivity(Intent(mContext, cla))
     }
@@ -102,9 +83,8 @@ abstract class RootActivity : AppCompatActivity {
 
 
     open fun loadingShow() {
-        if (!loadingViewView.isShowing) {
+        if (!loadingViewView.isShowing)
             loadingViewView.show()
-        }
     }
 
     open fun loadingDismiss() {

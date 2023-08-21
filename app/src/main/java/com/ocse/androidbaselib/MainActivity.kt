@@ -22,6 +22,7 @@ import com.ocse.androidbaselib.utils.MySet
 import com.ocse.androidbaselib.utils.MyWorker
 import com.ocse.baseandroid.base.BaseVMActivity
 import com.ocse.baseandroid.utils.*
+import com.ocse.baseandroid.view.LoadingView
 import com.ocse.baseandroid.view.ui.ShowAboveInputPopWindow
 import java.util.concurrent.TimeUnit
 
@@ -79,12 +80,15 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, BaseModel>() {
         //DataStoreUtils.setString("hu","hujiayi")
         viewModel.loginCn()
         dataBinding.textView.setOnClickListener {
+            LoadingView.Builder(this).setCanceledOnTouchOutside(true).create().show()
+
+
 //            val loadingView = LoadingView.Builder(mContext)
 //            loadingView.setMessage("123")
 //            val dialog = loadingView.create()
 //            dialog.show()
-            viewModel.user()
-            viewModel.loginCn()
+//            viewModel.user()
+//            viewModel.loginCn()
 //            val bottomSheetDialog = ChooseTakeBottomSheetDialog(this@MainActivity)
 //            bottomSheetDialog.show(supportFragmentManager,"")
 //            bottomSheetDialog.setTakePop(object :ChooseTakeBottomSheetDialog.ChooseTake{
@@ -149,8 +153,9 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, BaseModel>() {
         val hashMap = HashSet<String>()
         val mySet = MySet(hashMap)
         mySet.helloWorld()
-        val keyBordStateUtil=KeyBordStateUtil(this)
-        keyBordStateUtil.addOnKeyBordStateListener(object :KeyBordStateUtil.OnKeyBordStateListener{
+        val keyBordStateUtil = KeyBordStateUtil(this)
+        keyBordStateUtil.addOnKeyBordStateListener(object :
+            KeyBordStateUtil.OnKeyBordStateListener {
             override fun onSoftKeyBoardShow(keyboardHeight: Int) {
             }
 

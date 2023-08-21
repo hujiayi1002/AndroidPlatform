@@ -1,7 +1,7 @@
 package com.ocse.baseandroid.utils
 
 import com.google.gson.Gson
-import com.multilevel.treelist.Node
+//import com.multilevel.treelist.Node
 import com.ocse.baseandroid.view.tree.NodeBean
 /**
  * 树状数据结构相互转换

@@ -30,7 +30,7 @@ class AppManagerImpl(mContext: Context) : DefaultRefreshHeaderCreator {
     }
 
     var url = ""
-    fun initBaseUrl(baseUrl: String): AppManagerImpl  {
+    fun initBaseUrl(baseUrl: String): AppManagerImpl {
         if ("/" == baseUrl.substring(baseUrl.length - 1)) {
             url = baseUrl
         } else {
@@ -41,6 +41,11 @@ class AppManagerImpl(mContext: Context) : DefaultRefreshHeaderCreator {
 
     fun getBaseUrl(): String {
         return url
+    }
+
+    fun setLogEnable(enable: Boolean): AppManagerImpl {
+        MyLog.setLoggerEnable(enable)
+        return instance
     }
 
     /**

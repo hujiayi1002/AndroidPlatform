@@ -1,16 +1,14 @@
 package com.ocse.baseandroid.utils
 
 import android.util.Log
-import com.ocse.baseandroid.BuildConfig
 
 
 class MyLog {
     constructor()
-    constructor(msg: String?){
-        if (BuildConfig.DEBUG){
+    constructor(msg: String?) {
             Log.e(TAG, "$msg")
-        }
     }
+
     companion object {
         var TAG = "TAG"
         private var enable = false
@@ -36,14 +34,14 @@ class MyLog {
         }
 
         fun d(msg: String?) {
-            if (BuildConfig.DEBUG && !msg.isNullOrEmpty()) {
+            if (enable && !msg.isNullOrEmpty()) {
                 Log.d(TAG, "" + msg)
             }
 
         }
 
         fun i(msg: String?) {
-            if (BuildConfig.DEBUG && !msg.isNullOrEmpty()) {
+            if (enable &&!msg.isNullOrEmpty()) {
                 Log.i(TAG, "" + msg)
             }
 

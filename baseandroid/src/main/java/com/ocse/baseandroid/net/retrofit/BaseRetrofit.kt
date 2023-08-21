@@ -34,7 +34,6 @@ open class BaseRetrofit {
         if (retrofit == null) {
             okHttpClientBuilder = OkHttpClient.Builder()
             okHttpClientBuilder!!.retryOnConnectionFailure(true)
-                .addInterceptor(mHeaderInterceptor)
                 .addInterceptor(loggingInterceptor)
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)
@@ -69,11 +68,6 @@ open class BaseRetrofit {
      */
     fun addHeader(map: MutableMap<String, Any>?): BaseRetrofit {
         if (!map.isNullOrEmpty()) {
-            val token = getString("token")
-            if (token.isEmpty()) {
-                map["csrf-csrf"] = "csrf-csrf"
-                map["Content-Type"] = "pplication/x-www-form-urlencoded"
-            }
             mHeaderMap.putAll(map)
         }
         return this
@@ -110,7 +104,7 @@ open class BaseRetrofit {
     }
     private val loggingInterceptor =
         HttpLoggingInterceptor { message -> //打印retrofit日志
-            if (isJson(message))
+            //if (isJson(message))
                 MyLog.e("|-- HJY --|  $message")
         }.setLevel(HttpLoggingInterceptor.Level.BODY)
 

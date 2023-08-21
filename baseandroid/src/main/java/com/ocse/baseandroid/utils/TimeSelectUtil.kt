@@ -23,23 +23,31 @@ open class TimeSelectUtil {
 
         fun getDateTimeSeconds(tv: TextView) {
             tv.setOnClickListener {
-                DatePickerDialog(
-                    tv.context, { _, year, month, dayOfMonth ->
+                getDateTimeDialogSelect(tv.context, object : DateTimeDialogImpl {
+                    override fun grtTime(time: String) {
+                        tv.text = time
+                    }
 
-                        TimePickerDialog(
-                            tv.context, AlertDialog.THEME_HOLO_LIGHT, { _, hourOfDay, minute ->
-                                showText(tv, year, month, dayOfMonth, hourOfDay, minute)
-                            },
-                            c.get(Calendar.HOUR_OF_DAY),
-                            c.get(Calendar.MINUTE),
-                            true
-                        ).show()
-                    },
-                    c.get(Calendar.YEAR),
-                    c.get(Calendar.MONTH),
-                    c.get(Calendar.DAY_OF_MONTH)
-                ).show()
+                })
             }
+        }
+
+        private fun getDateTimeDialogSelect(context: Context, impl: DateTimeDialogImpl) {
+            DatePickerDialog(
+                context, { _, year, month, dayOfMonth ->
+                    TimePickerDialog(
+                        context, { _, hourOfDay, minute ->
+                            impl.grtTime(showText(year, month, dayOfMonth, hourOfDay, minute))
+                        },
+                        c.get(Calendar.HOUR_OF_DAY),
+                        c.get(Calendar.MINUTE),
+                        true
+                    ).show()
+                },
+                c.get(Calendar.YEAR),
+                c.get(Calendar.MONTH),
+                c.get(Calendar.DAY_OF_MONTH)
+            ).show()
         }
 
         fun initHourMin(tv: TextView) {
@@ -74,7 +82,6 @@ open class TimeSelectUtil {
 
         fun initYearMonthDay(tv: TextView, callBack: TimeCallBack) {
             tv.setOnClickListener {
-
                 DatePickerDialog(
                     tv.context, { _, year, month, dayOfMonth ->
                         showText(tv, year, month, dayOfMonth, null, null)
@@ -92,13 +99,12 @@ open class TimeSelectUtil {
         }
 
         private fun showText(
-            tv: TextView,
             year: Int?,
             month: Int?,
             dayOfMonth: Int?,
             hourOfDay: Int?,
             minute: Int?,
-        ) {
+        ): String {
             val timeStr = StringBuilder()
             year?.run { timeStr.append("$year") }
             month?.run {
@@ -129,9 +135,24 @@ open class TimeSelectUtil {
                 timeStr.append("$minute:00")
             }
 
-            tv.text = timeStr.toString()
+            return timeStr.toString()
         }
+
+        private fun showText(
+            tv: TextView,
+            year: Int?,
+            month: Int?,
+            dayOfMonth: Int?,
+            hourOfDay: Int?,
+            minute: Int?,
+        ) {
+            tv.text = showText(year, month, dayOfMonth, hourOfDay, minute)
+        }
+
     }
 
+    interface DateTimeDialogImpl {
+        fun grtTime(time: String)
+    }
 
 }

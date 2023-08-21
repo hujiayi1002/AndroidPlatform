@@ -3,7 +3,8 @@ package com.ocse.baseandroid.utils
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.provider.Settings
 
 /**
@@ -23,16 +24,32 @@ object NetworkUtil {
     }
 
     /**
-     * 获取活动网络信息
+     * 获取网络活动信息 判断网络是否连接
      *
      * 需添加权限 `<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>`
      *
      * @return NetworkInfo
      */
-    private fun getActiveNetworkInfo(content: Context?): NetworkInfo? {
+    fun getActiveNetworkInfo(content: Context?): Boolean {
         return if (content == null) {
-            null
-        } else (content.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo
+            false
+        } else try {
+            val conn = content.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                if (conn.activeNetwork == null) {
+                    return false
+                }
+                val networkCapabilities =
+                    conn.getNetworkCapabilities(conn.activeNetwork) ?: return false
+                return (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_SUPL)
+                        || networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                        || networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_MMS)
+                        || networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_FOTA))
+            }
+            conn.activeNetworkInfo != null && conn.isActiveNetworkMetered
+        } catch (e: Exception) {
+            false
+        }
     }
 
     /**
@@ -42,10 +59,6 @@ object NetworkUtil {
      *
      * @return `true`: 是<br></br>`false`: 否
      */
-    fun isConnected(content: Context?): Boolean {
-        val info = getActiveNetworkInfo(content)
-        return info != null && info.isConnected
-    }
 
     fun getUrl(url: String): String {
         return url

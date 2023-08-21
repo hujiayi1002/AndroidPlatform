@@ -21,10 +21,10 @@ object DensityUtil {
      * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
      */
     fun px2dp(pxValue: Float): Int {
-        val scale = if (ObtainApplication.app!=null) {
+        val scale = if (ObtainApplication.app != null) {
             ObtainApplication.app!!.resources.displayMetrics.density
-        }else {
-           1f
+        } else {
+            1f
         }
 
         return (pxValue / scale + 0.5f).toInt()
@@ -36,7 +36,7 @@ object DensityUtil {
      * @param
      * @return
      */
-    private  val screenHeight: Int
+    val screenHeight: Int
         get() {
             val wm = ObtainApplication.app!!
                 .getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -51,10 +51,10 @@ object DensityUtil {
      * @param
      * @return
      */
-       val screenWidth: Int
+    val screenWidth: Int
         get() {
             val wm = ObtainApplication.app?.let {
-               it. getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                it.getSystemService(Context.WINDOW_SERVICE) as WindowManager
             }
             val outMetrics = DisplayMetrics()
             wm?.defaultDisplay?.getMetrics(outMetrics)
@@ -85,6 +85,7 @@ object DensityUtil {
         view.destroyDrawingCache()
         return bp
     }
+
     /**
      * 获得状态栏的高度
      *

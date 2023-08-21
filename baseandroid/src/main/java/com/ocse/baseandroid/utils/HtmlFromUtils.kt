@@ -31,7 +31,7 @@ class HtmlFromUtils {
             xmlReader: XMLReader
         ) {
             // 处理标签<img>
-            if (tag.toLowerCase(Locale.getDefault()) == "img") {
+            if (tag.lowercase(Locale.getDefault()) == "img") {
                 // 获取长度
                 val len = output.length
                 // 获取图片地址

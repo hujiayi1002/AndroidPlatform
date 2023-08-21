@@ -1,6 +1,7 @@
 package com.ocse.baseandroid.utils
 
 import android.content.ContentResolver
+import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
@@ -13,13 +14,12 @@ class FileToUriUtils {
         }
 
         fun uriToFilePath(
-            selectedVideoUri: Uri,
-            contentResolver: ContentResolver
-        ): String? {
+            context:Context,
+            selectedVideoUri: Uri): String? {
             var filePath = ""
             val filePathColumn = arrayOf(MediaStore.MediaColumns.DATA)
             val cursor: Cursor? =
-                contentResolver.query(selectedVideoUri, filePathColumn, null, null, null)
+                context.contentResolver.query(selectedVideoUri, filePathColumn, null, null, null)
             //      也可用下面的方法拿到cursor
 //      Cursor cursor = this.context.managedQuery(selectedVideoUri, filePathColumn, null, null, null);
             cursor?.moveToFirst()

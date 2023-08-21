@@ -4,12 +4,11 @@ apply plugin: 'kotlin-kapt'
 group = 'com.github.hujiayi1002'
 
 android {
-    compileSdkVersion 33
-    buildToolsVersion "30.0.3"
+    compileSdkVersion 34
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 33
+        targetSdkVersion 34
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -52,8 +51,8 @@ dependencies {
     api 'androidx.constraintlayout:constraintlayout:2.1.3'
     api 'com.google.android.material:material:1.5.0'
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     //lifecycle
     api 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     api "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
@@ -99,7 +98,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
     //SmartRefreshLayout
-//    api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.2'
+//    api 'com.scwang.smartrefresh::1.1.2'
     //没有使用特殊Header，可以不加这行
 //    api 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.2'
     api 'com.scwang.smart:refresh-layout-kernel:2.0.1'      //核心必须依赖
@@ -107,14 +106,15 @@ dependencies {
     api 'com.scwang.smart:refresh-footer-classics:2.0.1'    //经典加载
 
 
-    //状态栏
-    api 'com.gyf.immersionbar:immersionbar:3.0.0'
-
+// 基础依赖包，必须要依赖
+    implementation 'com.geyifeng.immersionbar:immersionbar:3.2.2'
+// kotlin扩展（可选）
+    implementation 'com.geyifeng.immersionbar:immersionbar-ktx:3.2.2'
     //x5
     api 'com.tencent.tbs.tbssdk:sdk:43939'
 
     //树状
-    api 'com.github.zhangke3016:MultilevelTreeList:1.0.2'
+//    api 'com.github.zhangke3016:MultilevelTreeList:1.0.2'
 
     //图片选择
     //api 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.3'
@@ -124,7 +124,7 @@ dependencies {
     api files('libs/pinyin4j-2.5.0.jar')
 
     //BottomBarLayout
-    api 'com.github.chaychan:BottomBarLayout:1.2.0'
+    api 'com.github.chaychan:BottomBarLayout:2.0.2'
 
     // if u use AndroidX, use the following
     api 'com.blankj:utilcodex:1.29.0'
@@ -144,5 +144,5 @@ dependencies {
     implementation 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer-aliplay:v8.3.3-release-jitpack'
 
     api 'com.github.barteksc:android-pdf-viewer:2.8.2'
-
+    api 'com.github.li-xiaojun:XPopup:2.9.19'
 }

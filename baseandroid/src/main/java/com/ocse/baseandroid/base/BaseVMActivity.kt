@@ -7,7 +7,7 @@ import androidx.viewbinding.ViewBinding
 import java.lang.reflect.ParameterizedType
 
 
-abstract class BaseVMActivity<V : ViewBinding, VM:ViewModel>() :
+abstract class BaseVMActivity<V : ViewBinding, VM : ViewModel> :
     BaseActivity<V>() {
     private lateinit var viewModelProvider: ViewModelProvider
     lateinit var viewModel: VM

@@ -36,6 +36,7 @@ abstract class BaseActivity<V : ViewBinding> : RootActivity() {
     private lateinit var tvRight: TextView
     private lateinit var imgRight: ImageView
     private lateinit var toolbar: Toolbar
+    abstract fun setTitleText(): String?
     override fun initContent() {
         val type = javaClass.genericSuperclass
         val vbClass: Class<V> = type!!.saveAs<ParameterizedType>().actualTypeArguments[0].saveAs()
@@ -43,10 +44,12 @@ abstract class BaseActivity<V : ViewBinding> : RootActivity() {
         dataBinding = method.invoke(this, layoutInflater)!!.saveAsUnChecked()
         setContentView(dataBinding.root)
         viewModelProvider = ViewModelProvider(this)
-
         initTitleBar(setTitleText())
+        initView()
+        initData()
     }
-
+    abstract fun initView()
+    abstract fun initData()
     private fun initTitleBar(title: String?) {
         toolbar = findViewById(R.id.toolbar) ?: return
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
@@ -55,18 +58,12 @@ abstract class BaseActivity<V : ViewBinding> : RootActivity() {
         tvRight = toolbar.findViewById(R.id.tvRight)
         imgRight = toolbar.findViewById(R.id.imgRight)
         relBack.setOnClickListener { finish() }
-        KeyBordStateUtil.hideKeyBord()
         val titleStr =
             if (!title.isNullOrEmpty() && title.length > 8) "${title.substring(0, 8)}..." else title
-        //toolbar.title = titleStr
-        Log.e("TAG", "initTitleBar: ${titleStr} ")
         toolbar.post {
             TitleBuilder().setRightImgGone().setRightTextGone().setTitle(titleStr)
         }
     }
-
-
-    abstract fun setTitleText(): String?
 
     /**
      * 创建ViewModel对象

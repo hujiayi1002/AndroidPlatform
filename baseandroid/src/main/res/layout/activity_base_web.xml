@@ -1,23 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".base.BaseWebActivity">
 
-    <data>
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/layout_toolbar" />
 
-    </data>
-
-    <LinearLayout
+    <com.ocse.baseandroid.view.X5WebView
+        android:id="@+id/x5Web"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".base.BaseWebActivity">
-
-        <include layout="@layout/layout_toolbar"
-            android:id="@+id/toolbar"/>
-
-        <com.ocse.baseandroid.view.X5WebView
-            android:id="@+id/x5Web"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
-</layout>
+        android:layout_height="match_parent" />
+</LinearLayout>

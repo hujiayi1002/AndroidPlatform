@@ -3,7 +3,6 @@ package com.ocse.baseandroid.base
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import com.ocse.baseandroid.R
 import com.ocse.baseandroid.databinding.FragmentWebBinding
 import com.ocse.baseandroid.js.BaseJSScript
 import com.ocse.baseandroid.utils.MyLog
@@ -17,9 +16,10 @@ import com.tencent.smtt.sdk.WebViewClient
 class BaseWebFragment : BaseFragment<FragmentWebBinding>() {
     private var url = ""
     override fun onViewCreated(view: View) {
-      val  loadingView = LoadingView.Builder(requireActivity()).create()
-        if (!loadingView.isShowing&&isVisible)
+        val loadingView = LoadingView.Builder(requireActivity()).create()
+        if (!loadingView.isShowing && isVisible) {
             loadingView.show()
+        }
         dataBinding.x5Web.loadUrl(url)
         MyLog.e("TAG", "onViewCreated: $url, ")
         dataBinding.x5Web.addJavascriptInterface(activity?.let { BaseJSScript() }, "android")
@@ -33,10 +33,10 @@ class BaseWebFragment : BaseFragment<FragmentWebBinding>() {
 
     companion object {
         @JvmStatic
-        fun newInstance(parm: String) =
+        fun newInstance(urlParams: String) =
             BaseWebFragment().apply {
                 arguments = Bundle().apply {
-                    url = parm
+                    url = urlParams
                 }
             }
     }

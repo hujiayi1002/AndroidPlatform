@@ -1,24 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.ui.ShowVideoActivity">
 
-    <data>
+    <include
+        layout="@layout/layout_toolbar"
+        android:visibility="gone" />
 
-    </data>
-
-    <LinearLayout
+    <com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
+        android:id="@+id/videoPlayer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".view.ui.ShowVideoActivity">
-
-        <include
-            layout="@layout/layout_toolbar"
-            android:visibility="gone" />
-
-        <com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
-            android:id="@+id/videoPlayer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
-</layout>
+        android:layout_height="match_parent" />
+</LinearLayout>
