@@ -38,9 +38,10 @@ class ShowVideoActivity : BaseActivity<ActivityShowVideoBinding>() {
         name =
             if (intent.getStringExtra(Name).isNullOrEmpty()) "视频" else intent.getStringExtra(Name)
                 .toString()
-
         //增加title
         dataBinding?.videoPlayer?.titleTextView?.visibility = View.VISIBLE
+        dataBinding?.videoPlayer?.titleTextView?.text = name
+
         //设置返回键
         dataBinding?.videoPlayer?.backButton?.visibility = View.VISIBLE
         //设置旋转

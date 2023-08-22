@@ -41,10 +41,14 @@ class ShowPDFViewActivity : BaseActivity<ActivityShowPdfviewBinding>() {
     }
 
     override fun initView() {
-        dataBinding = ActivityShowPdfviewBinding.inflate(layoutInflater)
         ImmersionBar.with(this).transparentStatusBar().statusBarDarkFont(true).init()
         getPermission()
         intent.getStringExtra(Path)?.let { url = it;downLoadFile() }
+        loadingView = LoadingView.Builder(this).create()
+        if (!loadingView.isShowing){
+            loadingView.show()
+        }
+
     }
 
     override fun initData() {
@@ -69,7 +73,8 @@ class ShowPDFViewActivity : BaseActivity<ActivityShowPdfviewBinding>() {
                     ToastUtil.show("下载失败")
                 }
                 6 -> {
-                    loadingView.dismiss()
+                    if (::loadingView.isInitialized)
+                        loadingView.dismiss()
                     displayFile(msg.obj as File)
                 }
             }

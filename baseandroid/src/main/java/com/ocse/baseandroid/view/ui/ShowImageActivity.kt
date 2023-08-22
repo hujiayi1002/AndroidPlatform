@@ -2,6 +2,7 @@ package com.ocse.baseandroid.view.ui
 
 import android.content.Context
 import android.content.Intent
+import com.gyf.immersionbar.ImmersionBar
 import com.ocse.baseandroid.R
 import com.ocse.baseandroid.base.BaseActivity
 import com.ocse.baseandroid.databinding.ActivityShowImageBinding
@@ -27,7 +28,7 @@ class ShowImageActivity : BaseActivity<ActivityShowImageBinding>() {
     }
 
     override fun initView() {
-
+        ImmersionBar.with(this).statusBarColor(R.color.black).statusBarDarkFont(false).init()
     }
 
     override fun initData() {
@@ -37,8 +38,8 @@ class ShowImageActivity : BaseActivity<ActivityShowImageBinding>() {
         name =
             if (intent.getStringExtra(Name).isNullOrEmpty()) "图片" else intent.getStringExtra(Name)
                 .toString()
-
         GlideEngine.instance.loadPhoto(path, dataBinding.photoView)
+        dataBinding.tvTitle.text = name
     }
 
     override fun setTitleText(): String {

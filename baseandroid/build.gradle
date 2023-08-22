@@ -107,9 +107,9 @@ dependencies {
 
 
 // 基础依赖包，必须要依赖
-    implementation 'com.geyifeng.immersionbar:immersionbar:3.2.2'
+    api 'com.geyifeng.immersionbar:immersionbar:3.2.2'
 // kotlin扩展（可选）
-    implementation 'com.geyifeng.immersionbar:immersionbar-ktx:3.2.2'
+    api 'com.geyifeng.immersionbar:immersionbar-ktx:3.2.2'
     //x5
     api 'com.tencent.tbs.tbssdk:sdk:43939'
 
