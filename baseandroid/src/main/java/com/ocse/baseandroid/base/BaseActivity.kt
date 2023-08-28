@@ -59,7 +59,7 @@ abstract class BaseActivity<V : ViewBinding> : RootActivity() {
         imgRight = toolbar.findViewById(R.id.imgRight)
         relBack.setOnClickListener { finish() }
         val titleStr =
-            if (!title.isNullOrEmpty() && title.length > 8) "${title.substring(0, 8)}..." else title
+            if (!title.isNullOrEmpty() && title.length > 12) "${title.substring(0, 12)}..." else title
         toolbar.post {
             TitleBuilder().setRightImgGone().setRightTextGone().setTitle(titleStr)
         }

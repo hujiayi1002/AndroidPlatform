@@ -5,18 +5,19 @@
 
     <ImageView
         android:id="@+id/ivEmpty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="74dp"
+        android:layout_height="74dp"
+        android:paddingBottom="12dp"
         android:layout_above="@+id/tvCenter"
         android:layout_centerHorizontal="true"
-        android:src="@mipmap/iv_empty" />
+        android:src="@mipmap/error" />
 
     <TextView
         android:id="@+id/tvCenter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:textColor="@color/black"
-        android:text="暂无数据" />
+        android:text="数据异常" />
 </RelativeLayout>

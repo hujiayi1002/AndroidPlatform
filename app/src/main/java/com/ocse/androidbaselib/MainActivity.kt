@@ -24,12 +24,13 @@ import com.ocse.baseandroid.base.BaseVMActivity
 import com.ocse.baseandroid.utils.*
 import com.ocse.baseandroid.view.LoadingView
 import com.ocse.baseandroid.view.ui.ShowAboveInputPopWindow
+import com.ocse.baseandroid.view.ui.ShowVideoActivity
 import java.util.concurrent.TimeUnit
 
 
 class MainActivity : BaseVMActivity<ActivityMainBinding, BaseModel>() {
     override fun setTitleText(): String? {
-        return "123"
+        return "消息"
     }
 
     override fun initView() {
@@ -81,7 +82,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, BaseModel>() {
         viewModel.loginCn()
         dataBinding.textView.setOnClickListener {
             LoadingView.Builder(this).setCanceledOnTouchOutside(true).create().show()
-
+ShowVideoActivity.start(this,"123","https://media.w3.org/2010/05/sintel/trailer.mp4")
 
 //            val loadingView = LoadingView.Builder(mContext)
 //            loadingView.setMessage("123")

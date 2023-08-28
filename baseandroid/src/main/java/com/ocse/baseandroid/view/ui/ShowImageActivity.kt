@@ -35,14 +35,11 @@ class ShowImageActivity : BaseActivity<ActivityShowImageBinding>() {
         path =
             if (intent.getStringExtra(Path).isNullOrEmpty()) "" else intent.getStringExtra(Path)
                 .toString()
-        name =
-            if (intent.getStringExtra(Name).isNullOrEmpty()) "图片" else intent.getStringExtra(Name)
-                .toString()
         GlideEngine.instance.loadPhoto(path, dataBinding.photoView)
-        dataBinding.tvTitle.text = name
     }
 
     override fun setTitleText(): String {
-        return name
+        return if (intent.getStringExtra(Name).isNullOrEmpty()) "图片" else intent.getStringExtra(Name)
+            .toString()
     }
 }

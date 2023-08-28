@@ -36,6 +36,7 @@
             android:exported="true" />
         <activity
             android:name=".view.ui.ShowVideoActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="true" />
         <activity
             android:name=".view.ui.ShowImageActivity"

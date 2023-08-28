@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/black"
+    android:paddingTop="20dp"
     tools:context=".view.ui.ShowVideoActivity">
 
     <include
@@ -12,6 +14,7 @@
 
     <com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
         android:id="@+id/videoPlayer"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

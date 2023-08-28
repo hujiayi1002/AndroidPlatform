@@ -14,11 +14,15 @@ object DataCleanManagerUtil {
      * @throws Exception
      */
     @Throws(Exception::class)
-    fun getTotalCacheSize(context: Context, path: String?): String {
+    fun getTotalCacheSize(context: Context, vararg path: String?): String {
         //Context.getExternalCacheDir() --> SDCard/Android/data/你的应用包名/cache/目录，一般存放临时缓存数据
         var cacheSize = getFolderSize(context.cacheDir)
         //Context.getExternalFilesDir() --> SDCard/Android/data/你的应用的包名/files/ 目录，一般放一些长时间保存的数据
-        path?.let { cacheSize += getFolderSize(File(it)) }
+        if (!path.isNullOrEmpty()) {
+            path.forEach {
+                cacheSize += getFolderSize(File(it))
+            }
+        }
         return getFormatSize(cacheSize.toDouble())
     }
 
@@ -32,8 +36,12 @@ object DataCleanManagerUtil {
         return getTotalCacheSize(context, null)
     }
 
-    fun clearFileCache(filePath: String?) {
-        deleteFolderFile(filePath, true)
+    fun clearFileCache(vararg filePath: String?) {
+        if (filePath.isEmpty()) return
+        filePath.forEach {
+            deleteFolderFile(it, true)
+        }
+
     }
 
     /**
@@ -205,7 +213,7 @@ object DataCleanManagerUtil {
      * @param size
      * @return
      */
-     fun getFormatSize(size: Double): String {
+    fun getFormatSize(size: Double): String {
         val kiloByte = size / 1024
         if (kiloByte < 1) {
             return size.toString() + "B"
@@ -240,7 +248,7 @@ object DataCleanManagerUtil {
      * @throws Exception
      */
     @Throws(Exception::class)
-   private fun getCacheSize(file: File): String {
+    private fun getCacheSize(file: File): String {
         return getFormatSize(getFolderSize(file).toDouble())
     }
 }
