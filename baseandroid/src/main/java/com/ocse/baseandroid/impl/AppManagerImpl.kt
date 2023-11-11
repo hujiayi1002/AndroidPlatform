@@ -61,17 +61,11 @@ class AppManagerImpl(mContext: Context) : DefaultRefreshHeaderCreator {
 
             override fun onActivityStarted(activity: Activity) {
                 count++
-                MyLog.e("onActivityCreated: $count")
             }
 
-            override fun onActivityResumed(activity: Activity) {
+            override fun onActivityResumed(activity: Activity) {}
 
-
-            }
-
-            override fun onActivityPaused(activity: Activity) {
-
-            }
+            override fun onActivityPaused(activity: Activity) {}
 
             override fun onActivityStopped(activity: Activity) {
                 count--

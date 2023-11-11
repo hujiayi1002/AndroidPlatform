@@ -37,7 +37,6 @@ class ShowVideoActivity : BaseActivity<ActivityShowVideoBinding>() {
 
     override fun initView() {
         ImmersionBar.with(this).statusBarColor(R.color.black).statusBarDarkFont(false).init()
-
         path =
             if (intent.getStringExtra(Path).isNullOrEmpty()) "" else intent.getStringExtra(Path)
                 .toString()
@@ -64,10 +63,10 @@ class ShowVideoActivity : BaseActivity<ActivityShowVideoBinding>() {
         dataBinding.videoPlayer.fullscreenButton?.setOnClickListener {
             requestedOrientation = if (isLand) {
                 ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-            }else{
+            } else {
                 ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
             }
-            isLand=!isLand
+            isLand = !isLand
         }
         //是否可以滑动调整
         dataBinding.videoPlayer.setIsTouchWiget(true)
