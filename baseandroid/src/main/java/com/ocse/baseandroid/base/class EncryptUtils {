@@ -1,0 +1,209 @@
+class EncryptUtils {
+    /**
+     * 公钥
+     */
+     val PUBLIC_KEY = "ocse"
+
+    /**
+     * 私钥
+     */
+     val PRIVATE_KEY = "videosurve123456"
+
+    /**
+     * RSA加密后私钥
+     */
+     val RSA_PRIVATE_KEY =
+        "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAOu7v7w72+JWIrvwZepo/3Ue3ldkanZkgK1uOZTCUtEG07YyWew/rBdd8KLtwyuw28VxW7fUGrCTQsEHEoi0VZFwYh9sGFEjwrJLui/MvmYeL5WBVWvock57AtoKn3qusSp9CipHZYXm8BgBsccQT0Hpu7TtbQ3kGgz8BI+/LhTPAgMBAAECgYAO2Djfwqk7HI99ZEsWstv7ZSE9QZ6OrA+KXFmV65LJhPOKEquk+/F7WzgPGofi1XVRfqz2641utydJ/ocFQs3shsWn71dhg7CQY3TKcglDGjTS4cRdQ41Tt/CV+xNimGmcZGJXIk9W8CytPOQyIhTRBvcLNZFBhjeGjZoFyDHFMQJBAPYhhnSTQzD0LF7hk1wI2f37vJ4UW2li/HYMU4OsL26fzJJyJr16Jp9eaw5ZuFCjEHSWV02xS2TbLtJuu6jFvocCQQD1L37KR6c4tdSEQGTvBX8CH09EcNN2pilvU5ODNLHMncEKnj8r+c9WO211RWKI5x2PMcLR4yS5XXaQRalF44F5AkEA7/XjdkgUW+fSUnauCi5/CUWisKO8M1TUOeruiRMX80xMUAKGjnhGq12MFiOWtNclteTVHOPbU2r1jSd0Qaj4hQJAYoBfRrK8qpraMvuP0Tr7CIY9mTherCcbNF92Ptr3p0WlXTewF2G3+2PKmLd0W53GEVYjd6DyiwnSbSmfVLWOuQJAN17tcKPH5sjD0u6BKzc5/0z4lqz00KMpaAhIMuPX4xDpVuSLH9IL1Ye6yX70p4eulpzM1FHCHLfPfXl5w7+hFw=="
+
+    /**
+     * Base64加密
+     *
+     * @param data 待加密数据
+     * @return 加密后字符串
+     */
+    fun encryptByBase64(data: String?): String {
+        return Base64.encode(data, StandardCharsets.UTF_8)
+    }
+
+    /**
+     * Base64解密
+     *
+     * @param data 待解密数据
+     * @return 解密后字符串
+     */
+    fun decryptByBase64(data: String?): String {
+        return Base64.decodeStr(data, StandardCharsets.UTF_8)
+    }
+
+    /**
+     * AES加密
+     *
+     * @param data     待解密数据
+     * @param password 秘钥字符串
+     * @return 加密后字符串, 采用Base64编码
+     */
+    fun encryptByAes(data: String?, password: String): String {
+        require(!StrUtil.isBlank(password)) { "AES需要传入秘钥信息" }
+        // aes算法的秘钥要求是16位、24位、32位
+        val array = intArrayOf(16, 24, 32)
+        require(ArrayUtil.contains(array, password.length)) { "AES秘钥长度要求为16位、24位、32位" }
+        return SecureUtil.aes(password.toByteArray(StandardCharsets.UTF_8))
+            .encryptBase64(data, StandardCharsets.UTF_8)
+    }
+
+    /**
+     * AES解密
+     *
+     * @param data     待解密数据
+     * @param password 秘钥字符串
+     * @return 解密后字符串
+     */
+    fun decryptByAes(data: String?, password: String): String {
+        require(!StrUtil.isBlank(password)) { "AES需要传入秘钥信息" }
+        // aes算法的秘钥要求是16位、24位、32位
+        val array = intArrayOf(16, 24, 32)
+        require(ArrayUtil.contains(array, password.length)) { "AES秘钥长度要求为16位、24位、32位" }
+        return SecureUtil.aes(password.toByteArray(StandardCharsets.UTF_8))
+            .decryptStr(data, StandardCharsets.UTF_8)
+    }
+
+    /**
+     * sm4加密
+     *
+     * @param data     待加密数据
+     * @param password 秘钥字符串
+     * @return 加密后字符串, 采用Base64编码
+     */
+    fun encryptBySm4(data: String?, password: String): String {
+        require(!StrUtil.isBlank(password)) { "SM4需要传入秘钥信息" }
+        // sm4算法的秘钥要求是16位长度
+        val sm4PasswordLength = 16
+        require(sm4PasswordLength == password.length) { "SM4秘钥长度要求为16位" }
+        return SmUtil.sm4(password.toByteArray(StandardCharsets.UTF_8))
+            .encryptBase64(data, StandardCharsets.UTF_8)
+    }
+
+    /**
+     * sm4解密
+     *
+     * @param data     待解密数据
+     * @param password 秘钥字符串
+     * @return 解密后字符串
+     */
+    fun decryptBySm4(data: String?, password: String): String {
+        require(!StrUtil.isBlank(password)) { "SM4需要传入秘钥信息" }
+        // sm4算法的秘钥要求是16位长度
+        val sm4PasswordLength = 16
+        require(sm4PasswordLength == password.length) { "SM4秘钥长度要求为16位" }
+        return SmUtil.sm4(password.toByteArray(StandardCharsets.UTF_8))
+            .decryptStr(data, StandardCharsets.UTF_8)
+    }
+
+    /**
+     * 产生sm2加解密需要的公钥和私钥
+     *
+     * @return 公私钥Map
+     */
+    fun generateSm2Key(): Map<String, String> {
+        val keyMap: MutableMap<String, String> = HashMap(2)
+        val sm2 = SmUtil.sm2()
+        keyMap[PRIVATE_KEY] = sm2.privateKeyBase64
+        keyMap[PUBLIC_KEY] = sm2.publicKeyBase64
+        return keyMap
+    }
+
+    /**
+     * sm2公钥加密
+     *
+     * @param data      待加密数据
+     * @param publicKey 公钥
+     * @return 加密后字符串, 采用Base64编码
+     */
+    fun encryptBySm2(data: String?, publicKey: String?): String {
+        require(!StrUtil.isBlank(publicKey)) { "SM2需要传入公钥进行加密" }
+        val sm2 = SmUtil.sm2(null, publicKey)
+        return sm2.encryptBase64(data, StandardCharsets.UTF_8, KeyType.PublicKey)
+    }
+
+    /**
+     * sm2私钥解密
+     *
+     * @param data       待加密数据
+     * @param privateKey 私钥
+     * @return 解密后字符串
+     */
+    fun decryptBySm2(data: String?, privateKey: String?): String {
+        require(!StrUtil.isBlank(privateKey)) { "SM2需要传入私钥进行解密" }
+        val sm2 = SmUtil.sm2(privateKey, null)
+        return sm2.decryptStr(data, KeyType.PrivateKey, StandardCharsets.UTF_8)
+    }
+
+    /**
+     * 产生RSA加解密需要的公钥和私钥
+     *
+     * @return 公私钥Map
+     */
+    fun generateRsaKey(): Map<String, String> {
+        val keyMap: MutableMap<String, String> = HashMap(2)
+        val rsa = SecureUtil.rsa()
+        keyMap[PRIVATE_KEY] = rsa.privateKeyBase64
+        keyMap[PUBLIC_KEY] = rsa.publicKeyBase64
+        return keyMap
+    }
+
+    /**
+     * rsa公钥加密
+     *
+     * @param data      待加密数据
+     * @param publicKey 公钥
+     * @return 加密后字符串, 采用Base64编码
+     */
+    fun encryptByRsa(data: String?): String {
+        val rsa = SecureUtil.rsa(null, "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDru7+8O9viViK78GXqaP91Ht5XZGp2ZICtbjmUwlLRBtO2MlnsP6wXXfCi7cMrsNvFcVu31Bqwk0LBBxKItFWRcGIfbBhRI8KyS7ovzL5mHi+VgVVr6HJOewLaCp96rrEqfQoqR2WF5vAYAbHHEE9B6bu07W0N5BoM/ASPvy4UzwIDAQAB")
+        return rsa.encryptBase64(data, StandardCharsets.UTF_8, KeyType.PublicKey)
+    }
+
+    /**
+     * rsa私钥解密
+     *
+     *
+     * @param data       待加密数据
+     * @param privateKey 私钥
+     * @return 解密后字符串
+     */
+    fun decryptByRsa(data: String?, privateKey: String?): String {
+        require(!StrUtil.isBlank(privateKey)) { "RSA需要传入私钥进行解密" }
+        val rsa = SecureUtil.rsa(privateKey, null)
+        return rsa.decryptStr(data, KeyType.PrivateKey, StandardCharsets.UTF_8)
+    }
+
+    /**
+     * md5加密
+     *
+     * @param data 待加密数据
+     * @return 加密后字符串, 采用Hex编码
+     */
+    fun encryptByMd5(data: String?): String {
+        return SecureUtil.md5(data)
+    }
+
+    /**
+     * sha256加密
+     *
+     * @param data 待加密数据
+     * @return 加密后字符串, 采用Hex编码
+     */
+    fun encryptBySha256(data: String?): String {
+        return SecureUtil.sha256(data)
+    }
+
+    /**
+     * sm3加密
+     *
+     * @param data 待加密数据
+     * @return 加密后字符串, 采用Hex编码
+     */
+    fun encryptBySm3(data: String?): String {
+        return SmUtil.sm3(data)
+    }
+}

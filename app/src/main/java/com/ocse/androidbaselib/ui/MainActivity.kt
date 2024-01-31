@@ -1,29 +1,19 @@
-package com.ocse.androidbaselib
+package com.ocse.androidbaselib.ui
 
 import android.app.ActivityOptions
-import android.content.Context
 import android.content.Intent
-import android.graphics.Rect
 import android.util.Log
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
-import android.widget.LinearLayout
-import android.widget.PopupWindow
 import androidx.lifecycle.Observer
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.ocse.androidbaselib.databinding.ActivityMainBinding
-import com.ocse.androidbaselib.databinding.LayoutShowSendBinding
 import com.ocse.androidbaselib.model.BaseModel
 import com.ocse.androidbaselib.utils.MySet
 import com.ocse.androidbaselib.utils.MyWorker
 import com.ocse.baseandroid.base.BaseVMActivity
 import com.ocse.baseandroid.utils.*
 import com.ocse.baseandroid.view.LoadingView
-import com.ocse.baseandroid.view.ui.ShowAboveInputPopWindow
 import com.ocse.baseandroid.view.ui.ShowVideoActivity
 import java.util.concurrent.TimeUnit
 
@@ -81,8 +71,9 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, BaseModel>() {
         //DataStoreUtils.setString("hu","hujiayi")
         viewModel.loginCn()
         dataBinding.textView.setOnClickListener {
-            LoadingView.Builder(this).setCanceledOnTouchOutside(true).create().show()
-ShowVideoActivity.start(this,"123","https://media.w3.org/2010/05/sintel/trailer.mp4")
+            start(CoroutinesActivity::class.java)
+//            LoadingView.Builder(this).setCanceledOnTouchOutside(true).create().show()
+//ShowVideoActivity.start(this,"123","https://media.w3.org/2010/05/sintel/trailer.mp4")
 
 //            val loadingView = LoadingView.Builder(mContext)
 //            loadingView.setMessage("123")

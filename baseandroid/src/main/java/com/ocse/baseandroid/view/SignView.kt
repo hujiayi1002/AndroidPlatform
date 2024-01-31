@@ -14,6 +14,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 
 /**
+ * 手写签字
  * Created by designer on 17/8/16.
  */
 class SignView : View {

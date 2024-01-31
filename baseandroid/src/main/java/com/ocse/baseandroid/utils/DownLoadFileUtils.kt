@@ -31,7 +31,7 @@ object DownLoadFileUtils {
             override fun onFailure(call: Call, e: IOException) {
                 // 下载失败
                 listener?.onDownloadFailed()
-                MyLog.e("TAG", "onFailure: " + e.message)
+                MyLog.e("DownLoadFileUtils", "onFailure: " + e.message)
             }
 
             @Throws(IOException::class)
@@ -77,10 +77,29 @@ object DownLoadFileUtils {
         })
     }
 
+    @JvmStatic
+    fun downloadSkipCache(
+        url: String,
+        btType: String,
+        isAppendSysTime: Boolean,
+        listener: OnDownloadListener?,
+    ) {
+        // 储存下载文件的目录
+        val savePath = ObtainApplication.app!!.getExternalFilesDir("file")
+        val file = if (isAppendSysTime) File(
+            savePath,
+            System.currentTimeMillis().toString() + btType
+        ) else File(savePath, btType)
+        if (file.exists()) {
+            listener?.onDownloadSuccess(file); return
+        }
+        download(url, btType, isAppendSysTime, listener)
+    }
+
     /**
      * @param url  下载连接 类型默认png
      */
-    fun download(
+    fun downloadPNG(
         url: String,
     ) {
         download(url, ".png", true, null)

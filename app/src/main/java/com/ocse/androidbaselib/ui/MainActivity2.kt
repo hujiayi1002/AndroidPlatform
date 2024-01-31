@@ -1,4 +1,4 @@
-package com.ocse.androidbaselib
+package com.ocse.androidbaselib.ui
 
 import com.ocse.androidbaselib.databinding.ActivityMain2Binding
 import com.ocse.baseandroid.base.BaseActivity

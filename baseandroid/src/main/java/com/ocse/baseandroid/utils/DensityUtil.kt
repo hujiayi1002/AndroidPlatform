@@ -95,10 +95,9 @@ object DensityUtil {
         get() {
             var statusHeight = -1
             try {
-                val clazz =
-                    Class.forName("com.android.internal.R\$dimen")
+                val clazz = Class.forName("com.android.internal.R\$dimen")
                 val `object` = clazz.newInstance()
-                val height = clazz.getField("status_bar_height")[`object`].toString().toInt()
+                val height = clazz.getField("status_bar_height")?.get(`object`).toString().toInt()
                 statusHeight =
                     ObtainApplication.app?.resources?.getDimensionPixelSize(height)!!
             } catch (e: Exception) {
