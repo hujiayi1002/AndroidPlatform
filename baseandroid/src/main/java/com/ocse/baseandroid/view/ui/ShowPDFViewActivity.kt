@@ -107,7 +107,7 @@ class ShowPDFViewActivity : BaseActivity<ActivityShowPdfviewBinding>() {
 
     private fun displayFile(file: File) {
         if (file.name.contains(".pdf", true)) {
-            dataBinding.pdfView.fromFile(file).load()
+            viewBinding.pdfView.fromFile(file).load()
         } else {
             QbSdk.openFileReader(this, file.path, null, null)
         }

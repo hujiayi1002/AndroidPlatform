@@ -1,44 +1,49 @@
 package com.ocse.androidbaselib.model
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
+import com.google.gson.Gson
 import com.ocse.androidbaselib.bean.UserBean
 import com.ocse.androidbaselib.retrofit.ApiRetrofit.Companion.instance
 import com.ocse.baseandroid.base.BaseViewModel
-import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 /**
  * @author hujiayi
  */
 class BaseModel : BaseViewModel() {
-    val userMutableLiveData by lazy { MutableLiveData<UserBean>() }
     val loginCn by lazy { MutableLiveData<UserBean>() }
-
-
     fun user() {
-//       instance.login("admin", "123456")
-//            .subscribe(object : BaseObserver<UserBean>(compositeDisposable) {
-//                override fun onError(e: Throwable) {
-//                    super.onError(e)
-//                    userMutableLiveData.postValue(null)
-//                }
-//
-//                override fun _onNext(entity: UserBean) {
-//                    userMutableLiveData.postValue(entity)
-//                }
-//                    override fun _onNext(entity: UserBean) {
-//                        userMutableLiveData.postValue(entity)
-//                        saveString("token", entity.access_token)
-//                        //getVersion();
-//                    }
-//            })
+        launch({
+            val data = instance.loginCn("test001", "hse@123456")
+            loginCn.postValue(data)
+        }, {
+            loginCn.postValue(null)
+        })
     }
 
-    fun loginCn() {
-        launch({
-            val data=instance.loginCn("admin", "123456")
-            userMutableLiveData.postValue(data)
+    fun loginCn() = liveData {
+        emitLiveData({
+            emit(instance.loginCn("test001", "hse@123456"))
         }, {
-            userMutableLiveData
+            emit(null)
         })
+    }
+
+    fun loginCnFlow() = liveData {
+        flow {
+            emit(instance.loginCn("test001", "hse@123456"))
+        }.flowOn(Dispatchers.IO).catch {
+            Log.e("TAG", "loginCn1: ${it.message}, ")
+            emit(null)
+        }.collectLatest {
+            Log.e("TAG", "loginCn2: ${Gson().toJson(it)},")
+            emit(it)
+        }
     }
 }

@@ -20,10 +20,11 @@ class ApiRetrofit : BaseRetrofit() {
         val token = SharePreferenceUtil.getString("token")
         val params: HashMap<String, Any> = HashMap()
         if (token.isEmpty()) {
+            Log.e("TAG", "getApiService: 2 $token")
             params["csrf-csrf"] = "csrf-csrf"
             params["Content-Type"] = "application/x-www-form-urlencoded"
-
         } else {
+            Log.e("TAG", "getApiService: 1 ")
             params["csrf-csrf"] = "csrf-csrf"
             params["Authorization"] = "Bearer  $token"
         }

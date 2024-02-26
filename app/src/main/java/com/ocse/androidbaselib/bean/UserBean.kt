@@ -1,6 +1,6 @@
 package com.ocse.androidbaselib.bean
 
-data class UserBean(
+data class UserBean (
     val access_token: String,
     val expires_in: Int,
     val refresh_token: String,

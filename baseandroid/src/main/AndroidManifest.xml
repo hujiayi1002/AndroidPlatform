@@ -17,17 +17,21 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
     <application
         android:name=".base.BaseApplication"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
+        <activity
+            android:name=".base.BaseMainActivity"
+            android:exported="false" />
         <activity
             android:name=".view.ui.ShowPDFViewActivity"
             android:exported="true" />
@@ -50,8 +54,8 @@
 
         <service
             android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
-            android:label="dexopt"
             android:exported="false"
+            android:label="dexopt"
             android:process=":dexopt" />
 
         <provider

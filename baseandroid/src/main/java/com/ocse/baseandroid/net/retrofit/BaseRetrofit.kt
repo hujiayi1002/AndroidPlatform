@@ -1,8 +1,7 @@
 package com.ocse.baseandroid.net.retrofit
 
+import com.ocse.baseandroid.impl.AppManagerImpl
 import com.ocse.baseandroid.utils.MyLog
-import com.ocse.baseandroid.utils.SharePreferenceUtil.getString
-import com.ocse.baseandroid.utils.ToastUtil.Companion.show
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -27,26 +26,22 @@ open class BaseRetrofit {
     private val mHeaderMap: MutableMap<String, Any> = HashMap()
 
     private fun setRetrofit(): Retrofit? {
-        baseUrl = ApiRetrofitManager.getBaseUrl()
-        if (baseUrl.isNullOrEmpty()) {
-            throw NullPointerException("请先设置BaseUrl")
-        }
+        baseUrl = AppManagerImpl.getBaseUrl()
         if (retrofit == null) {
             okHttpClientBuilder = OkHttpClient.Builder()
             okHttpClientBuilder!!.retryOnConnectionFailure(true)
                 .addInterceptor(loggingInterceptor)
+                .addInterceptor(mHeaderInterceptor)
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)
                 .writeTimeout(20, TimeUnit.SECONDS)
                 .build()
-            retrofit = baseUrl?.let {
-                Retrofit.Builder() //基地址
-                    .baseUrl(it)
-                    .client(okHttpClientBuilder!!.build())
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .build()
-            }
+            retrofit = Retrofit.Builder() //基地址
+                .baseUrl(baseUrl!!)
+                .client(okHttpClientBuilder!!.build())
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
         }
         return retrofit
     }
@@ -55,7 +50,8 @@ open class BaseRetrofit {
         try {
             setRetrofit()
         } catch (e: Exception) {
-            show(e.message)
+            MyLog.e("|-- HJY --|  ${e.message}")
+            throw e
         }
         return retrofit
     }
@@ -105,7 +101,7 @@ open class BaseRetrofit {
     private val loggingInterceptor =
         HttpLoggingInterceptor { message -> //打印retrofit日志
             //if (isJson(message))
-                MyLog.e("|-- HJY --|  $message")
+            MyLog.e("|-- HJY --|  $message")
         }.setLevel(HttpLoggingInterceptor.Level.BODY)
 
     private fun isJson(message: String): Boolean {

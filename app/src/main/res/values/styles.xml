@@ -5,6 +5,17 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:statusBarColor">@color/white</item>
+    </style>
+    <style name="selectText">
+        <item name="android:textSize">14sp</item>
+        <item name="textColor">#03DAC5</item>
+        <item name="android:drawablePadding">4dp</item>
     </style>
 
+    <style name="unSelectText">
+        <item name="android:textSize">14sp</item>
+        <item name="textColor">#03DAF2</item>
+        <item name="android:drawablePadding">4dp</item>
+    </style>
 </resources>

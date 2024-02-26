@@ -17,9 +17,6 @@
             android:label="@string/title_activity_coroutines"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".CoroutinesActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.NavigationActivity"
             android:exported="false" />
         <activity

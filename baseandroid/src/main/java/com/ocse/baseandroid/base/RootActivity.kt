@@ -25,7 +25,6 @@ abstract class RootActivity : AppCompatActivity {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ImmersionBar.with(this).transparentBar().statusBarDarkFont(true).init()
         ActivityStackUtils.addActivity(this)
         loadingViewView = LoadingView.Builder(this).create()
         initContent()

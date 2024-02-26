@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.iterator
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
@@ -30,39 +32,43 @@ import kotlin.system.exitProcess
 
 abstract class BaseActivity<V : ViewBinding> : RootActivity() {
     private lateinit var viewModelProvider: ViewModelProvider
-    lateinit var dataBinding: V
-    private lateinit var relBack: RelativeLayout
-    private lateinit var tvTitle: TextView
-    private lateinit var tvRight: TextView
-    private lateinit var imgRight: ImageView
-    private lateinit var toolbar: Toolbar
+    open  lateinit var viewBinding: V
+    val MAX_LENGTH = 8
     abstract fun setTitleText(): String?
     override fun initContent() {
         val type = javaClass.genericSuperclass
         val vbClass: Class<V> = type!!.saveAs<ParameterizedType>().actualTypeArguments[0].saveAs()
         val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
-        dataBinding = method.invoke(this, layoutInflater)!!.saveAsUnChecked()
-        setContentView(dataBinding.root)
+        viewBinding = method.invoke(this, layoutInflater)!!.saveAsUnChecked()
+        setContentView(viewBinding.root)
         viewModelProvider = ViewModelProvider(this)
         initTitleBar(setTitleText())
         initView()
         initData()
     }
+
     abstract fun initView()
     abstract fun initData()
     private fun initTitleBar(title: String?) {
-        toolbar = findViewById(R.id.toolbar) ?: return
-        supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        relBack = toolbar.findViewById(R.id.relBack)
-        tvTitle = toolbar.findViewById(R.id.tvTitle)
-        tvRight = toolbar.findViewById(R.id.tvRight)
-        imgRight = toolbar.findViewById(R.id.imgRight)
-        relBack.setOnClickListener { finish() }
-        val titleStr =
-            if (!title.isNullOrEmpty() && title.length > 12) "${title.substring(0, 12)}..." else title
-        toolbar.post {
-            TitleBuilder().setRightImgGone().setRightTextGone().setTitle(titleStr)
+        for (view in (viewBinding.root as ViewGroup)) {
+            if (view is TitleBarView) {
+                supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                view.post {
+                    view.setTitle(sub(title))
+                    view.setStatusColor(this, R.color.white, true)
+                    view.relBack.setOnClickListener { finish() }
+                }
+            }
         }
+    }
+
+    private fun sub(title: String?): String? {
+        return if (!title.isNullOrEmpty() && title.length > MAX_LENGTH) "${
+            title.substring(
+                0,
+                MAX_LENGTH
+            )
+        }..." else title
     }
 
     /**
@@ -70,7 +76,6 @@ abstract class BaseActivity<V : ViewBinding> : RootActivity() {
      * @param clazz
      * @return
      */
-    @Deprecated("getViewModel")
     open fun <T : ViewModel> get(clazz: Class<T>): T {
         return viewModelProvider[clazz]
     }
@@ -82,61 +87,5 @@ abstract class BaseActivity<V : ViewBinding> : RootActivity() {
      */
     fun <T : ViewModel> getViewModel(clazz: Class<T>): T {
         return viewModelProvider[clazz]
-    }
-
-    open inner class TitleBuilder {
-        open fun setTitle(title: String?): TitleBuilder {
-            tvTitle.text = title
-            return this
-        }
-
-        open fun setLeftBackGone(): TitleBuilder {
-            relBack.visibility = View.GONE
-            return this
-        }
-
-        open fun setLeftBackVisible(): TitleBuilder {
-            relBack.visibility = View.VISIBLE
-            return this
-        }
-
-        open fun getBack(): View {
-            relBack.visibility = View.VISIBLE
-            return relBack
-        }
-
-        open fun getRight(): View {
-            tvRight.visibility = View.VISIBLE
-            return tvRight
-        }
-
-        open fun setRightTextGone(): TitleBuilder {
-            tvRight.visibility = View.GONE
-            return this
-        }
-
-        open fun setRightText(text: String): TitleBuilder {
-            tvRight.visibility = View.VISIBLE
-            tvRight.text = text
-            return this
-        }
-
-        open fun setRightImgGone(): TitleBuilder {
-            imgRight.visibility = View.GONE
-            return this
-        }
-
-        open fun setRightImg(resource: Int): TitleBuilder {
-            imgRight.visibility = View.VISIBLE
-            imgRight.setImageResource(resource)
-            return this
-        }
-
-        open fun setBackgroundColor(color: Int): TitleBuilder {
-            if (::toolbar.isInitialized) {
-                toolbar.setBackgroundColor(color)
-            }
-            return this
-        }
     }
 }

@@ -30,19 +30,19 @@ abstract class BaseWebActivity : BaseActivity<ActivityBaseWebBinding>() {
     abstract fun setUrl(): String
     override fun initView() {
         url = setUrl()
-        dataBinding.x5Web.addJavascriptInterface(BaseJSScript(), "android")
+        viewBinding.x5Web.addJavascriptInterface(BaseJSScript(), "android")
         loadingShow()
-        dataBinding.x5Web.webViewClient = object : WebViewClient() {
+        viewBinding.x5Web.webViewClient = object : WebViewClient() {
             override fun onPageFinished(p0: WebView?, p1: String) {
                 super.onPageFinished(p0, p1)
                 url = p1
                 loadingDismiss()
             }
         }
-        dataBinding.x5Web.webChromeClient = object : WebChromeClient() {
+        viewBinding.x5Web.webChromeClient = object : WebChromeClient() {
             override fun onReceivedTitle(p0: WebView?, p1: String?) {
                 super.onReceivedTitle(p0, p1)
-                dataBinding.toolbar.tvTitle.text = p1
+                viewBinding.toolbar.tvTitle.text = p1
             }
 
             // For Android  >= 5.0
@@ -144,7 +144,7 @@ abstract class BaseWebActivity : BaseActivity<ActivityBaseWebBinding>() {
     //    if (it.resultCode == Activity.RESULT_CANCELED) {
     //        if (null != uploadFiles) {
     //            uploadFiles?.onReceiveValue(null)
-    //            dataBinding.x5Web.loadUrl(url)
+    //            viewBinding.x5Web.loadUrl(url)
     //            uploadFiles = null
     //        }
     //    }
@@ -158,7 +158,7 @@ abstract class BaseWebActivity : BaseActivity<ActivityBaseWebBinding>() {
         if (resultCode == Activity.RESULT_CANCELED) {
             if (null != uploadFiles) {
                 uploadFiles?.onReceiveValue(null)
-                dataBinding.x5Web.loadUrl(url)
+                viewBinding.x5Web.loadUrl(url)
                 uploadFiles = null
             }
         }
@@ -166,8 +166,8 @@ abstract class BaseWebActivity : BaseActivity<ActivityBaseWebBinding>() {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (dataBinding.x5Web.canGoBack()) {
-                dataBinding.x5Web.goBack()
+            if (viewBinding.x5Web.canGoBack()) {
+                viewBinding.x5Web.goBack()
             } else {
                 finish()
             }

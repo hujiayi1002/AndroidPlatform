@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:icon="@drawable/ic_album_item_choose_easy_photos"
+        android:icon="@drawable/ic_launcher_background"
         android:title="主页" />
     <item
-        android:icon="@drawable/ic_album_item_choose_easy_photos"
+        android:icon="@drawable/ic_launcher_foreground"
         android:title="其他1" />
     <item
-        android:icon="@drawable/ic_album_item_choose_easy_photos"
+        android:icon="@drawable/video_enlarge"
         android:title="其他2" />
     <item
-        android:icon="@drawable/ic_album_item_choose_easy_photos"
+        android:icon="@mipmap/update_dialog_top"
         android:title="其他3" />
 </menu>

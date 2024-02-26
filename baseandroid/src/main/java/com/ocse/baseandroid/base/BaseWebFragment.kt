@@ -20,10 +20,10 @@ class BaseWebFragment : BaseFragment<FragmentWebBinding>() {
         if (!loadingView.isShowing && isVisible) {
             loadingView.show()
         }
-        dataBinding.x5Web.loadUrl(url)
+        viewBinding.x5Web.loadUrl(url)
         MyLog.e("TAG", "onViewCreated: $url, ")
-        dataBinding.x5Web.addJavascriptInterface(activity?.let { BaseJSScript() }, "android")
-        dataBinding.x5Web.webViewClient = object : WebViewClient() {
+        viewBinding.x5Web.addJavascriptInterface(activity?.let { BaseJSScript() }, "android")
+        viewBinding.x5Web.webViewClient = object : WebViewClient() {
             override fun onPageFinished(p0: WebView?, p1: String?) {
                 super.onPageFinished(p0, p1)
                 loadingView.dismiss()
@@ -44,7 +44,7 @@ class BaseWebFragment : BaseFragment<FragmentWebBinding>() {
     override fun onDestroy() {
         super.onDestroy()
         try {
-            dataBinding.x5Web.let {
+            viewBinding.x5Web.let {
                 (it.parent as ViewGroup).removeView(it)
                 it.stopLoading()
                 it.clearCache(true)

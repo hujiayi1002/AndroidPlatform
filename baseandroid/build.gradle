@@ -115,19 +115,14 @@ dependencies {
 
     //树状
 //    api 'com.github.zhangke3016:MultilevelTreeList:1.0.2'
-
     //图片选择
-    //api 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.3'
     api 'com.github.HuanTanSheng:EasyPhotos:3.1.5' //androidx版本，支持android 10，永久维护
-
-
     api files('libs/pinyin4j-2.5.0.jar')
-
     //BottomBarLayout
     api 'com.github.chaychan:BottomBarLayout:2.0.2'
 
     // if u use AndroidX, use the following
-    api 'com.blankj:utilcodex:1.29.0'
+//    api 'com.blankj:utilcodex:1.29.0'
 
     //eventbus
     api 'org.greenrobot:eventbus:3.2.0'
@@ -145,4 +140,6 @@ dependencies {
 
     api 'com.github.barteksc:android-pdf-viewer:2.8.2'
     api 'com.github.li-xiaojun:XPopup:2.9.19'
+
+    api 'com.airbnb.android:lottie:3.1.0'
 }

@@ -19,7 +19,7 @@ import java.net.SocketException
 /**
  * @author
  */
-abstract class BaseObserver<T>(compositeDisposable: CompositeDisposable) :
+abstract class BaseObserver<T : Any>(compositeDisposable: CompositeDisposable) :
     DisposableObserver<T>() {
 
     init {

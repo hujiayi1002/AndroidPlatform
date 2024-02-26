@@ -1,10 +1,8 @@
 package com.ocse.baseandroid.view
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -13,82 +11,41 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
-import com.blankj.utilcode.util.ScreenUtils
 import com.gyf.immersionbar.ImmersionBar
 import com.ocse.baseandroid.R
-import com.ocse.baseandroid.databinding.LayoutToolbarBinding
-import com.ocse.baseandroid.utils.DensityUtil
-import org.jetbrains.annotations.NotNull
 
 class TitleBarView : RelativeLayout {
-    private lateinit var ivBack: ImageView
-    private lateinit var imgRight: ImageView
-    private lateinit var tvTitle: TextView
-    private lateinit var tvRight: TextView
-    private lateinit var relBack: RelativeLayout
-    private lateinit var toolbar: Toolbar
-
     private var mContext: Context
+    lateinit var toolbar: Toolbar
+    lateinit var relBack: RelativeLayout
+
+    lateinit var tvTitle: TextView
+    lateinit var tvRight: TextView
+    lateinit var imgRight: ImageView
+    lateinit var ivBack: ImageView
 
     constructor(context: Context, attributes: AttributeSet) : super(context, attributes) {
         this.mContext = context
-        initAttributes(context, attributes)
+        initViews()
     }
 
     constructor(context: Context, attributes: AttributeSet, defStyleAttr: Int) : super(
         context, attributes, defStyleAttr
     ) {
         this.mContext = context
-        initAttributes(context, attributes)
+        initViews()
     }
 
-    constructor(
-        context: Context,
-        attributes: AttributeSet,
-        defStyleAttr: Int,
-        defStyleRes: Int,
-    ) : super(context, attributes, defStyleAttr, defStyleRes) {
-        this.mContext = context
-        initAttributes(context, attributes)
-        initView(context)
+    private fun initViews() {
+        LayoutInflater.from(context).inflate(R.layout.layout_toolbar, this, true)
+        toolbar = findViewById(R.id.toolbar)
+        relBack = findViewById(R.id.relBack)
+        tvTitle = findViewById(R.id.tvTitle)
+        tvRight = findViewById(R.id.tvRight)
+        imgRight = findViewById(R.id.imgRight)
+        ivBack = findViewById(R.id.ivBack)
     }
 
-    @SuppressLint("CustomViewStyleable")
-    private fun initAttributes(context: Context, attributes: AttributeSet) {
-        //val view = LayoutInflater.from(context).inflate(R.layout.layout_toolbar, this, true);
-        //val viewBinding = LayoutToolbarBinding.bind(view)
-        val typedArray = context.obtainStyledAttributes(attributes, R.styleable.TitleBarView)
-        val heightParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT)
-        val widthParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-        //ivBack = viewBinding.ivBack
-        //ivBack.visibility = VISIBLE
-        //imgRight = viewBinding.imgRight
-        //tvTitle = viewBinding.tvTitle
-        //tvRight = viewBinding.tvRight
-        //relBack = viewBinding.relBack
-        //toolbar = viewBinding.toolbar
-
-        //getDimensionPixelSize
-        //setImageResource
-        val title = typedArray.getString(R.styleable.TitleBarView_titleText)
-        //val mDividerHeight = typedArray.getDimensionPixelSize(R.styleable.titleViewHeight,DensityUtil.dp2px(68f))
-
-        tvTitle.text = if (title.isNullOrEmpty()) getAppName() else title
-        tvRight.text = typedArray.getString(R.styleable.TitleBarView_rightText)
-        toolbar.elevation = 3f
-        tvTitle.setTextColor(typedArray.getColor(R.styleable.TitleBarView_textColor, Color.BLACK))
-        tvRight.setTextColor(
-            typedArray.getColor(
-                R.styleable.TitleBarView_rightTextColor, Color.BLACK
-            )
-        )
-        ivBack.setImageDrawable(typedArray.getDrawable(R.styleable.TitleBarView_icon_back))
-        imgRight.setImageDrawable(typedArray.getDrawable(R.styleable.TitleBarView_rightImg))
-        toolbar.background = typedArray.getDrawable(R.styleable.TitleBarView_backgroundColor)
-        typedArray.recycle()
-    }
- fun   initView( context:Context){}
-    fun   setViewAttributes( context:Context){}
     /**
      * appname
      */
@@ -100,7 +57,7 @@ class TitleBarView : RelativeLayout {
             )
             val labelRes = packageInfo.applicationInfo.labelRes
             return mContext.resources.getText(labelRes)
-        } catch (e: PackageManager.NameNotFoundException) {
+        } catch (_: PackageManager.NameNotFoundException) {
         }
         return null
     }
@@ -108,32 +65,47 @@ class TitleBarView : RelativeLayout {
     /**
      * 设置返回按钮隐藏
      */
-    fun setBackGone(): TitleBarView {
+    fun setLeftArrowGone(): TitleBarView {
         relBack.visibility = View.INVISIBLE
         return this
     }
 
-    /**
-     *   设置背景色
-     */
-    fun setBackground(@NotNull resId: Int): TitleBarView {
-        toolbar.setBackgroundColor(ContextCompat.getColor(mContext, resId))
+    fun setLeftArrowResource(res: Int): TitleBarView {
+        ivBack.visibility = View.VISIBLE
+        ivBack.setImageResource(res)
         return this
     }
 
-    /**
-     *  左边返回按钮点击事件
-     */
-    fun setOnLeftClick(onClickListener: OnClickListener): TitleBarView {
-        relBack.setOnClickListener(onClickListener)
+    fun setRightImgResource(res: Int): TitleBarView {
+        imgRight.visibility = View.VISIBLE
+        imgRight.setImageResource(res)
         return this
     }
 
-    /**
-     *  设置返回按钮
-     */
-    fun setBackImg(@NotNull resId: Int): TitleBarView {
-        ivBack.setImageResource(resId)
+    fun setRightText(rightText: String): TitleBarView {
+        tvRight.visibility = View.VISIBLE
+        tvRight.text = rightText
+        return this
+    }
+
+    fun setRightTextColor(res: Int): TitleBarView {
+        tvRight.setTextColor(ContextCompat.getColor(mContext, res))
+        return this
+    }
+
+    fun setTitleBarColor(res: Int): TitleBarView {
+        toolbar.setBackgroundColor(ContextCompat.getColor(mContext, res))
+        return this
+    }
+
+    fun setTitleTextColor(res: Int): TitleBarView {
+        tvTitle.setTextColor(ContextCompat.getColor(mContext, res))
+        return this
+    }
+
+    fun setStatusColor(activity: Activity, res: Int, darkFontColor: Boolean): TitleBarView {
+        ImmersionBar.with(activity).fitsSystemWindows(true).statusBarColor(res)
+            .statusBarDarkFont(darkFontColor).init()
         return this
     }
 
@@ -141,32 +113,11 @@ class TitleBarView : RelativeLayout {
      * 设置标题
      */
     fun setTitle(title: String?): TitleBarView {
-        tvTitle.text = title
-        return this
-    }
-
-    /**
-     * 设置右边文字
-     */
-    fun setRightText(@NotNull rightText: String): TitleBarView {
-        tvRight.visibility = View.VISIBLE
-        tvRight.text = rightText
-        return this
-    }
-
-    /**
-     * 设置字体颜色
-     */
-    fun setTitleColor(@NotNull colorId: Int): TitleBarView {
-        tvTitle.setTextColor(colorId)
-        return this
-    }
-
-    /**
-     *   设置右边文字颜色
-     */
-    fun setRightTextColor(@NotNull colorId: Int): TitleBarView {
-        tvRight.setTextColor(colorId)
+        if (title.isNullOrEmpty()) {
+            tvTitle.text = getAppName()
+        } else {
+            tvTitle.text = title
+        }
         return this
     }
 
@@ -182,6 +133,4 @@ class TitleBarView : RelativeLayout {
         ImmersionBar.with(activity).transparentStatusBar().statusBarDarkFont(darkFontColor).init()
         return this
     }
-
-
 }

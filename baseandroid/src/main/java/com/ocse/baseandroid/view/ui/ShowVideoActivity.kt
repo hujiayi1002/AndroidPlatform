@@ -10,7 +10,6 @@ import com.gyf.immersionbar.ImmersionBar
 import com.ocse.baseandroid.R
 import com.ocse.baseandroid.base.BaseActivity
 import com.ocse.baseandroid.databinding.ActivityShowVideoBinding
-import com.ocse.baseandroid.utils.ToastUtil
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import java.io.File
@@ -44,23 +43,23 @@ class ShowVideoActivity : BaseActivity<ActivityShowVideoBinding>() {
             if (intent.getStringExtra(Name).isNullOrEmpty()) "视频" else intent.getStringExtra(Name)
                 .toString()
         if (path.startsWith("http")) {
-            dataBinding.videoPlayer.setUp(path, true, name)
+            viewBinding.videoPlayer.setUp(path, true, name)
         } else {
-            dataBinding.videoPlayer.setUp(Uri.fromFile(File(path)).toString(), false, name)
+            viewBinding.videoPlayer.setUp(Uri.fromFile(File(path)).toString(), false, name)
         }
         //增加title
-        dataBinding.videoPlayer.titleTextView?.visibility = View.VISIBLE
-        dataBinding.videoPlayer.titleTextView?.text = name
+        viewBinding.videoPlayer.titleTextView?.visibility = View.VISIBLE
+        viewBinding.videoPlayer.titleTextView?.text = name
         //设置返回键
-        dataBinding.videoPlayer.backButton?.visibility = View.VISIBLE
+        viewBinding.videoPlayer.backButton?.visibility = View.VISIBLE
         //设置旋转
-        orientationUtils = OrientationUtils(this, dataBinding.videoPlayer)
-        dataBinding.videoPlayer.isAutoFullWithSize = true
-        dataBinding.videoPlayer.isReleaseWhenLossAudio = true
-        dataBinding.videoPlayer.backButton?.setOnClickListener {
+        orientationUtils = OrientationUtils(this, viewBinding.videoPlayer)
+        viewBinding.videoPlayer.isAutoFullWithSize = true
+        viewBinding.videoPlayer.isReleaseWhenLossAudio = true
+        viewBinding.videoPlayer.backButton?.setOnClickListener {
             finish()
         }
-        dataBinding.videoPlayer.fullscreenButton?.setOnClickListener {
+        viewBinding.videoPlayer.fullscreenButton?.setOnClickListener {
             requestedOrientation = if (isLand) {
                 ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             } else {
@@ -69,13 +68,13 @@ class ShowVideoActivity : BaseActivity<ActivityShowVideoBinding>() {
             isLand = !isLand
         }
         //是否可以滑动调整
-        dataBinding.videoPlayer.setIsTouchWiget(true)
+        viewBinding.videoPlayer.setIsTouchWiget(true)
 
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        dataBinding.videoPlayer.onConfigurationChanged(this, newConfig, orientationUtils)
+        viewBinding.videoPlayer.onConfigurationChanged(this, newConfig, orientationUtils)
     }
 
     override fun initData() {
@@ -90,25 +89,25 @@ class ShowVideoActivity : BaseActivity<ActivityShowVideoBinding>() {
 
     fun initUrl() {
         path?.let {
-            dataBinding.videoPlayer.setUp(path, true, name)
+            viewBinding.videoPlayer.setUp(path, true, name)
         }
     }
 
     fun initUri() {
         path?.let {
             val file =
-                dataBinding.videoPlayer.setUp(Uri.fromFile(File(path)).toString(), false, name)
+                viewBinding.videoPlayer.setUp(Uri.fromFile(File(path)).toString(), false, name)
         }
     }
 
     override fun onPause() {
         super.onPause()
-        dataBinding.videoPlayer.onVideoPause()
+        viewBinding.videoPlayer.onVideoPause()
     }
 
     override fun onResume() {
         super.onResume()
-        dataBinding.videoPlayer.onVideoResume()
+        viewBinding.videoPlayer.onVideoResume()
     }
 
     override fun onDestroy() {
@@ -120,11 +119,11 @@ class ShowVideoActivity : BaseActivity<ActivityShowVideoBinding>() {
     override fun onBackPressed() {
         //先返回正常状态
         if (orientationUtils?.screenType === ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-            dataBinding.videoPlayer.fullscreenButton?.performClick()
+            viewBinding.videoPlayer.fullscreenButton?.performClick()
             return
         }
         //释放所有
-        dataBinding.videoPlayer.setVideoAllCallBack(null)
+        viewBinding.videoPlayer.setVideoAllCallBack(null)
         super.onBackPressed()
     }
 }

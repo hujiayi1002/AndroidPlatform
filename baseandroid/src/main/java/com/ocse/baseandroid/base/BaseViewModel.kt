@@ -3,7 +3,6 @@ package com.ocse.baseandroid.base
 
 import android.accounts.AccountsException
 import android.accounts.NetworkErrorException
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.JsonIOException
@@ -14,9 +13,9 @@ import com.ocse.baseandroid.utils.MyLog
 import com.ocse.baseandroid.utils.NetworkUtil
 import com.ocse.baseandroid.utils.ObtainApplication
 import com.ocse.baseandroid.utils.ToastUtil
-import com.ocse.baseandroid.view.LoadingView
-import kotlinx.coroutines.*
-import java.net.ConnectException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.util.concurrent.TimeoutException
@@ -36,6 +35,30 @@ open class BaseViewModel : ViewModel() {
      */
     fun launch(
         onNext: suspend () -> Unit,
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                onNext()
+            } catch (e: Exception) {
+                MyLog.e(e.message)
+            }
+        }
+    }
+
+    suspend fun emitLiveData(
+        onNext: suspend() -> Unit,
+        onError: suspend() -> Unit,
+    ) {
+        try {
+            onNext()
+        } catch (e: Exception) {
+            onError()
+            MyLog.e("|--TAG--| ${e.message}")
+        }
+    }
+
+    fun launch(
+        onNext: suspend () -> Unit,
         onError: suspend () -> Unit,
     ) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -49,7 +72,7 @@ open class BaseViewModel : ViewModel() {
 
     /**
      *onNext  处理数据;
-     *isShowError 是否显示异常toast;
+     *isShowError 是否显示异常Toast;
      */
     fun launch(
         onNext: suspend () -> Unit,
@@ -107,8 +130,6 @@ open class BaseViewModel : ViewModel() {
         } else if (e is SocketException) {
             reason = "连接异常,请稍后重新连接"
             // http异常
-//        } else if (e is HttpException) {
-//            reason = e.message
         } else if (e is JsonSyntaxException
             || e is JsonIOException
             || e is JsonParseException

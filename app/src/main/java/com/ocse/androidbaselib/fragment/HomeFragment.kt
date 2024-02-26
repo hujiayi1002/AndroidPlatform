@@ -39,7 +39,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 activity?.finish()
             }
         })
-        dataBinding.tvHome.setOnClickListener {
+        viewBinding.tvHome.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.action_homeFragment_to_otherFragment)
         }
     }
